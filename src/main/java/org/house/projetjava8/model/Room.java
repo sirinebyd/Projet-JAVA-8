@@ -1,10 +1,12 @@
 package org.house.projetjava8.model;
 import java.util.List;
+
+
 public class Room {
     private int id;
     private String name;
     private int capacity;
-    private boolean isMixed; // true = mixte, false = non-mixte
+    private boolean isMixed;
 
     public Room(int id, String name, int capacity, boolean isMixed) {
         this.id = id;
@@ -13,4 +15,36 @@ public class Room {
         this.isMixed = isMixed;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getCapacity() {
+        return capacity;
+    }
+
+    public void setCapacity(int capacity) {
+        this.capacity = capacity;
+    }
+
+    public boolean isMixed() {
+        return isMixed;
+    }
+
+    public void setMixed(boolean mixed) {
+        isMixed = mixed;
+    }
 }
+
