@@ -1,40 +1,80 @@
 package org.house.projetjava8.dao;
 
 import org.house.projetjava8.model.Person;
+
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.List
-
+import java.util.List;
 
 public class PersonDAO {
-    private Connection conn;
+    private final Connection connection;
 
-    public PersonDAO(Connection conn) {
-        this.conn = conn;
+    public PersonDAO() {
+        this.connection = DatabaseManager.getConnection();
     }
 
     public void add(Person person) throws SQLException {
-        String sql = "INSERT INTO person (id, name, age, gender) VALUES (?, ?, ?, ?)";
-        PreparedStatement stmt = conn.prepareStatement(sql);
-        stmt.setInt(1, person.getId());
-        stmt.setString(2, person.getName());
-        stmt.setInt(3, person.getAge());
-        stmt.setString(4, person.getGender());
-        stmt.executeUpdate();
+        String sql = "INSERT INTO person (last_name, first_name, gender, birth_date, birth_city, social_security_number, addresses) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setString(1, person.getLastName());
+            stmt.setString(2, person.getFirstName());
+            stmt.setString(3, person.getGender());
+            stmt.setString(4, person.getBirthDate());
+            stmt.setString(5, person.getBirthCity());
+            stmt.setString(6, person.getSocialSecurityNumber());
+            stmt.setString(7, person.getAddresses());
+            stmt.executeUpdate();
+        }
     }
 
     public List<Person> getAll() throws SQLException {
-        List<Person> list = new ArrayList<>();
-        Statement stmt = conn.createStatement();
-        ResultSet rs = stmt.executeQuery("SELECT * FROM person");
-        while (rs.next()) {
-            list.add(new Person(
-                rs.getInt("id"),
-                rs.getString("name"),
-                rs.getInt("age"),
-                rs.getString("gender")
-            ));
+        List<Person> people = new ArrayList<>();
+        String sql = "SELECT * FROM person";
+        try (Statement stmt = connection.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
+            while (rs.next()) {
+                Person person = new Person(
+                    rs.getInt("id"),
+                    rs.getString("last_name"),
+                    rs.getString("first_name"),
+                    rs.getString("gender"),
+                    rs.getString("birth_date"),
+                    rs.getString("birth_city"),
+                    rs.getString("social_security_number"),
+                    rs.getString("addresses")
+                );
+                people.add(person);
+            }
         }
-        return list;
+        return people;
+    }
+
+    public Person getById(int id) throws SQLException {
+        String sql = "SELECT * FROM person WHERE id = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return new Person(
+                        rs.getInt("id"),
+                        rs.getString("last_name"),
+                        rs.getString("first_name"),
+                        rs.getString("gender"),
+                        rs.getString("birth_date"),
+                        rs.getString("birth_city"),
+                        rs.getString("social_security_number"),
+                        rs.getString("addresses")
+                    );
+                }
+            }
+        }
+        return null;
+    }
+
+    public void delete(int id) throws SQLException {
+        String sql = "DELETE FROM person WHERE id = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            stmt.executeUpdate();
+        }
     }
 }
