@@ -3,7 +3,8 @@ package org.house.projetjava8.dao;
 import org.house.projetjava8.model.Person;
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.List
+
 
 public class PersonDAO {
     private Connection conn;
