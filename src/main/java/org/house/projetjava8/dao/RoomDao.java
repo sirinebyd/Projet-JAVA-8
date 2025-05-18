@@ -41,4 +41,31 @@ public class RoomDAO {
         }
         return rooms;
     }
+
+    public Room getById(int id) throws SQLException {
+        String sql = "SELECT * FROM room WHERE id = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return new Room(
+                        rs.getInt("id"),
+                        rs.getString("name"),
+                        rs.getString("gender_restriction"),
+                        rs.getInt("min_age"),
+                        rs.getInt("max_age")
+                    );
+                }
+            }
+        }
+        return null;
+    }
+
+    public void delete(int id) throws SQLException {
+        String sql = "DELETE FROM room WHERE id = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            stmt.executeUpdate();
+        }
+    }
 }
