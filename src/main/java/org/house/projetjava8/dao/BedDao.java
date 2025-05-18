@@ -37,4 +37,29 @@ public class BedDAO {
         }
         return beds;
     }
+
+    public Bed getById(int id) throws SQLException {
+        String sql = "SELECT * FROM bed WHERE id = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return new Bed(
+                        rs.getInt("id"),
+                        rs.getInt("room_id"),
+                        rs.getInt("capacity")
+                    );
+                }
+            }
+        }
+        return null;
+    }
+
+    public void delete(int id) throws SQLException {
+        String sql = "DELETE FROM bed WHERE id = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            stmt.executeUpdate();
+        }
+    }
 }
