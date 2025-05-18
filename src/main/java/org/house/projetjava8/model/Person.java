@@ -4,12 +4,15 @@ import java.util.List;
 
 public class Person {
     private int id;
-    private String lastName;
-    private String firstName;
+    private String name;
+    private int age;
     private String gender;
-    private LocalDate birthDate;
-    private String birthCity;
-    private String socialSecurityNumber;
-    private List<String> addresses;
-    
+
+    public Person(int id, String name, int age, String gender) {
+        this.id = id;
+        this.name = name;
+        this.age = age;
+        this.gender = gender;
+    }
+
 }
