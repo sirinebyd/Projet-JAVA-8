@@ -43,4 +43,32 @@ public class OccupationDAO {
         }
         return occupations;
     }
+
+    public Occupation getById(int id) throws SQLException {
+        String sql = "SELECT * FROM occupation WHERE id = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return new Occupation(
+                        rs.getInt("id"),
+                        rs.getInt("person_id"),
+                        rs.getInt("bed_id"),
+                        rs.getString("start_date"),
+                        rs.getString("end_date"),
+                        rs.getBoolean("exited")
+                    );
+                }
+            }
+        }
+        return null;
+    }
+
+    public void delete(int id) throws SQLException {
+        String sql = "DELETE FROM occupation WHERE id = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            stmt.executeUpdate();
+        }
+    }
 }
