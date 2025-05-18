@@ -2,6 +2,7 @@ package org.house.projetjava8.model;
 import java.time.LocalDate;
 
 
+
 public class Occupation {
     private int id;
     private int personId;
@@ -17,5 +18,44 @@ public class Occupation {
         this.endDate = endDate;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getPersonId() {
+        return personId;
+    }
+
+    public void setPersonId(int personId) {
+        this.personId = personId;
+    }
+
+    public int getBedId() {
+        return bedId;
+    }
+
+    public void setBedId(int bedId) {
+        this.bedId = bedId;
+    }
+
+    public LocalDate getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(LocalDate startDate) {
+        this.startDate = startDate;
+    }
+
+    public LocalDate getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(LocalDate endDate) {
+        this.endDate = endDate;
+    }
 }
 
