@@ -1,22 +1,59 @@
-package org.house.projetjava8.model;
-import java.time.LocalDate;
+package org.house.projetjava8.database;
 
+import org.house.projetjava8.dao.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 
-public interface DatabaseManager {
+public class DatabaseManager {
 
-    void addPerson(Person person);
-    void updatePerson(Person person);
-    void deletePerson(int id);
+    private static final String DB_URL = //nom du fichier
+    private static Connection connection = null;
 
-    void addRoom(Room room);
-    void updateRoom(Room room);
-    void deleteRoom(int id);
+    private static PersonDAO personDAO;
+    private static RoomDAO roomDAO;
+    private static BedDAO bedDAO;
+    private static OccupationDAO occupationDAO;
 
-    void addBed(Bed bed);
-    void updateBed(Bed bed);
-    void deleteBed(int id);
+    public static void connect() throws SQLException {
+        if (connection == null || connection.isClosed()) {
+            connection = DriverManager.getConnection(DB_URL);
+            System.out.println(" Connexion établie avec SQLite.");
+            personDAO = new PersonDAO(connection);
+            roomDAO = new RoomDAO(connection);
+            bedDAO = new BedDAO(connection);
+            occupationDAO = new OccupationDAO(connection);
+        }
+    }
 
-    void addOccupation(Occupation occupation);
-    void updateOccupation(Occupation occupation);
-    void deleteOccupation(int id);
+    public static void disconnect() {
+        try {
+            if (connection != null && !connection.isClosed()) {
+                connection.close();
+                System.out.println("Connexion fermée.");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static PersonDAO getPersonDAO() {
+        return personDAO;
+    }
+
+    public static RoomDAO getRoomDAO() {
+        return roomDAO;
+    }
+
+    public static BedDAO getBedDAO() {
+        return bedDAO;
+    }
+
+    public static OccupationDAO getOccupationDAO() {
+        return occupationDAO;
+    }
+
+    public static Connection getConnection() {
+        return connection;
+    }
 }
