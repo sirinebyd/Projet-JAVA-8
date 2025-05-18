@@ -2,23 +2,58 @@ package org.house.projetjava8.model;
 import java.time.LocalDate;
 import java.util.List;
 
-public class OccupancyRequest {
-    private int numberOfPeople;
+public class Occupation {
+    private int id;
+    private int personId;
+    private int bedId;
     private LocalDate startDate;
     private LocalDate endDate;
-    private boolean sameRoom;
-    private String gender;
-    private int minAge;
-    private int maxAge;
 
-    public OccupancyRequest(int numberOfPeople, LocalDate startDate, LocalDate endDate, boolean sameRoom, String gender, int minAge, int maxAge) {
-        this.numberOfPeople = numberOfPeople;
+    public Occupation(int id, int personId, int bedId, LocalDate startDate, LocalDate endDate) {
+        this.id = id;
+        this.personId = personId;
+        this.bedId = bedId;
         this.startDate = startDate;
         this.endDate = endDate;
-        this.sameRoom = sameRoom;
-        this.gender = gender;
-        this.minAge = minAge;
-        this.maxAge = maxAge;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getPersonId() {
+        return personId;
+    }
+
+    public void setPersonId(int personId) {
+        this.personId = personId;
+    }
+
+    public int getBedId() {
+        return bedId;
+    }
+
+    public void setBedId(int bedId) {
+        this.bedId = bedId;
+    }
+
+    public LocalDate getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(LocalDate startDate) {
+        this.startDate = startDate;
+    }
+
+    public LocalDate getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(LocalDate endDate) {
+        this.endDate = endDate;
+    }
 }
