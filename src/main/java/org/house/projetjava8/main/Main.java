@@ -15,8 +15,8 @@ public class Main {
             DatabaseManager.getPersonDAO().add(p2);
 
             
-            Room r1 = new Room(1, "Salle Alpha", 4, false); // non-mixte
-            Room r2 = new Room(2, "Salle Bêta", 6, true);  // mixte
+            Room r1 = new Room(1, "Salle Alpha", 4, false);
+            Room r2 = new Room(2, "Salle Bêta", 6, true); 
             DatabaseManager.getRoomDAO().add(r1);
             DatabaseManager.getRoomDAO().add(r2);
 
