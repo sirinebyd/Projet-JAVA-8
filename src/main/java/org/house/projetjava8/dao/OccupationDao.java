@@ -3,6 +3,7 @@ package org.house.projetjava8.dao;
 import org.house.projetjava8.model.Occupation;
 
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,13 +15,12 @@ public class OccupationDAO {
     }
 
     public void add(Occupation occupation) throws SQLException {
-        String sql = "INSERT INTO occupation (person_id, bed_id, start_date, end_date, exited) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO occupation (person_id, bed_id, start_date, end_date) VALUES (?, ?, ?, ?)";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setInt(1, occupation.getPersonId());
             stmt.setInt(2, occupation.getBedId());
-            stmt.setString(3, occupation.getStartDate());
-            stmt.setString(4, occupation.getEndDate());
-            stmt.setBoolean(5, occupation.isExited());
+            stmt.setDate(3, Date.valueOf(occupation.getStartDate()));
+            stmt.setDate(4, Date.valueOf(occupation.getEndDate()));
             stmt.executeUpdate();
         }
     }
@@ -34,9 +34,8 @@ public class OccupationDAO {
                     rs.getInt("id"),
                     rs.getInt("person_id"),
                     rs.getInt("bed_id"),
-                    rs.getString("start_date"),
-                    rs.getString("end_date"),
-                    rs.getBoolean("exited")
+                    rs.getDate("start_date").toLocalDate(),
+                    rs.getDate("end_date").toLocalDate()
                 );
                 occupations.add(occupation);
             }
@@ -54,9 +53,8 @@ public class OccupationDAO {
                         rs.getInt("id"),
                         rs.getInt("person_id"),
                         rs.getInt("bed_id"),
-                        rs.getString("start_date"),
-                        rs.getString("end_date"),
-                        rs.getBoolean("exited")
+                        rs.getDate("start_date").toLocalDate(),
+                        rs.getDate("end_date").toLocalDate()
                     );
                 }
             }
