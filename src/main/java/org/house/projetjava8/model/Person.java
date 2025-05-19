@@ -1,21 +1,28 @@
 package org.house.projetjava8.model;
-import java.time.LocalDate;
-import java.util.List;
-
 
 public class Person {
     private int id;
-    private String name;
-    private int age;
+    private String lastName;
+    private String firstName;
     private String gender;
+    private String birthDate;
+    private String birthCity;
+    private String socialSecurityNumber;
+    private String addresses;
 
-    public Person(int id, String name, int age, String gender) {
+    public Person(int id, String lastName, String firstName, String gender, String birthDate,
+                  String birthCity, String socialSecurityNumber, String addresses) {
         this.id = id;
-        this.name = name;
-        this.age = age;
+        this.lastName = lastName;
+        this.firstName = firstName;
         this.gender = gender;
+        this.birthDate = birthDate;
+        this.birthCity = birthCity;
+        this.socialSecurityNumber = socialSecurityNumber;
+        this.addresses = addresses;
     }
 
+    // Getters & Setters
     public int getId() {
         return id;
     }
@@ -24,20 +31,20 @@ public class Person {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
-    public int getAge() {
-        return age;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setAge(int age) {
-        this.age = age;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
     public String getGender() {
@@ -46,5 +53,37 @@ public class Person {
 
     public void setGender(String gender) {
         this.gender = gender;
+    }
+
+    public String getBirthDate() {
+        return birthDate;
+    }
+
+    public void setBirthDate(String birthDate) {
+        this.birthDate = birthDate;
+    }
+
+    public String getBirthCity() {
+        return birthCity;
+    }
+
+    public void setBirthCity(String birthCity) {
+        this.birthCity = birthCity;
+    }
+
+    public String getSocialSecurityNumber() {
+        return socialSecurityNumber;
+    }
+
+    public void setSocialSecurityNumber(String socialSecurityNumber) {
+        this.socialSecurityNumber = socialSecurityNumber;
+    }
+
+    public String getAddresses() {
+        return addresses;
+    }
+
+    public void setAddresses(String addresses) {
+        this.addresses = addresses;
     }
 }
