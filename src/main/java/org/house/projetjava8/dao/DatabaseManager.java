@@ -8,7 +8,7 @@ public class DatabaseManager {
     private static Connection connection;
 
     public static void connect(String dbPath) throws SQLException {
-        connection = DriverManager.getConnection("jdbc:sqlite:" + dbPath);
+        connection = DriverManager.getConnection("nom"+ chemin);
     }
 
     public static void disconnect() throws SQLException {
