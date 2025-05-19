@@ -14,10 +14,10 @@ public class BedDAO {
     }
 
     public void add(Bed bed) throws SQLException {
-        String sql = "INSERT INTO bed (room_id, capacity) VALUES (?, ?)";
+        String sql = "INSERT INTO bed (room_id, is_available) VALUES (?, ?)";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setInt(1, bed.getRoomId());
-            stmt.setInt(2, bed.getCapacity());
+            stmt.setBoolean(2, bed.isAvailable());
             stmt.executeUpdate();
         }
     }
@@ -30,7 +30,7 @@ public class BedDAO {
                 Bed bed = new Bed(
                     rs.getInt("id"),
                     rs.getInt("room_id"),
-                    rs.getInt("capacity")
+                    rs.getBoolean("is_available")
                 );
                 beds.add(bed);
             }
@@ -47,7 +47,7 @@ public class BedDAO {
                     return new Bed(
                         rs.getInt("id"),
                         rs.getInt("room_id"),
-                        rs.getInt("capacity")
+                        rs.getBoolean("is_available")
                     );
                 }
             }
@@ -59,6 +59,15 @@ public class BedDAO {
         String sql = "DELETE FROM bed WHERE id = ?";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setInt(1, id);
+            stmt.executeUpdate();
+        }
+    }
+
+    public void updateAvailability(int id, boolean isAvailable) throws SQLException {
+        String sql = "UPDATE bed SET is_available = ? WHERE id = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setBoolean(1, isAvailable);
+            stmt.setInt(2, id);
             stmt.executeUpdate();
         }
     }
