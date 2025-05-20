@@ -1,20 +1,21 @@
 package org.house.projetjava8.model;
-import java.util.List;
-
 
 public class Room {
     private int id;
     private String name;
-    private int capacity;
-    private boolean isMixed;
+    private String genderRestriction;
+    private int minAge;
+    private int maxAge;
 
-    public Room(int id, String name, int capacity, boolean isMixed) {
+    public Room(int id, String name, String genderRestriction, int minAge, int maxAge) {
         this.id = id;
         this.name = name;
-        this.capacity = capacity;
-        this.isMixed = isMixed;
+        this.genderRestriction = genderRestriction;
+        this.minAge = minAge;
+        this.maxAge = maxAge;
     }
 
+    // Getters & Setters
     public int getId() {
         return id;
     }
@@ -31,20 +32,27 @@ public class Room {
         this.name = name;
     }
 
-    public int getCapacity() {
-        return capacity;
+    public String getGenderRestriction() {
+        return genderRestriction;
     }
 
-    public void setCapacity(int capacity) {
-        this.capacity = capacity;
+    public void setGenderRestriction(String genderRestriction) {
+        this.genderRestriction = genderRestriction;
     }
 
-    public boolean isMixed() {
-        return isMixed;
+    public int getMinAge() {
+        return minAge;
     }
 
-    public void setMixed(boolean mixed) {
-        isMixed = mixed;
+    public void setMinAge(int minAge) {
+        this.minAge = minAge;
+    }
+
+    public int getMaxAge() {
+        return maxAge;
+    }
+
+    public void setMaxAge(int maxAge) {
+        this.maxAge = maxAge;
     }
 }
-
