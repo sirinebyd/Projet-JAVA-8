@@ -15,12 +15,13 @@ public class OccupationDAO {
     }
 
     public void add(Occupation occupation) throws SQLException {
-        String sql = "INSERT INTO occupation (person_id, bed_id, start_date, end_date) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO occupation (person_id, bed_id, start_date, end_date, has_left) VALUES (?, ?, ?, ?, ?)";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setInt(1, occupation.getPersonId());
             stmt.setInt(2, occupation.getBedId());
             stmt.setDate(3, Date.valueOf(occupation.getStartDate()));
             stmt.setDate(4, Date.valueOf(occupation.getEndDate()));
+            stmt.setBoolean(5, occupation.isHasLeft());
             stmt.executeUpdate();
         }
     }
@@ -35,7 +36,8 @@ public class OccupationDAO {
                     rs.getInt("person_id"),
                     rs.getInt("bed_id"),
                     rs.getDate("start_date").toLocalDate(),
-                    rs.getDate("end_date").toLocalDate()
+                    rs.getDate("end_date").toLocalDate(),
+                    rs.getBoolean("has_left")
                 );
                 occupations.add(occupation);
             }
@@ -54,7 +56,8 @@ public class OccupationDAO {
                         rs.getInt("person_id"),
                         rs.getInt("bed_id"),
                         rs.getDate("start_date").toLocalDate(),
-                        rs.getDate("end_date").toLocalDate()
+                        rs.getDate("end_date").toLocalDate(),
+                        rs.getBoolean("has_left")
                     );
                 }
             }
@@ -66,6 +69,15 @@ public class OccupationDAO {
         String sql = "DELETE FROM occupation WHERE id = ?";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setInt(1, id);
+            stmt.executeUpdate();
+        }
+    }
+
+    public void updateHasLeft(int id, boolean hasLeft) throws SQLException {
+        String sql = "UPDATE occupation SET has_left = ? WHERE id = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setBoolean(1, hasLeft);
+            stmt.setInt(2, id);
             stmt.executeUpdate();
         }
     }
