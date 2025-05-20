@@ -14,7 +14,7 @@ public class PersonDAO {
     }
 
     public void add(Person person) throws SQLException {
-        String sql = "INSERT INTO person (last_name, first_name, gender, birth_date, birth_city, social_security_number, addresses) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO person (last_name, first_name, gender, birth_date, birth_city, social_security_number) VALUES (?, ?, ?, ?, ?, ?)";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setString(1, person.getLastName());
             stmt.setString(2, person.getFirstName());
@@ -22,7 +22,6 @@ public class PersonDAO {
             stmt.setString(4, person.getBirthDate());
             stmt.setString(5, person.getBirthCity());
             stmt.setString(6, person.getSocialSecurityNumber());
-            stmt.setString(7, person.getAddresses());
             stmt.executeUpdate();
         }
     }
@@ -39,8 +38,7 @@ public class PersonDAO {
                     rs.getString("gender"),
                     rs.getString("birth_date"),
                     rs.getString("birth_city"),
-                    rs.getString("social_security_number"),
-                    rs.getString("addresses")
+                    rs.getString("social_security_number")
                 );
                 people.add(person);
             }
@@ -61,8 +59,7 @@ public class PersonDAO {
                         rs.getString("gender"),
                         rs.getString("birth_date"),
                         rs.getString("birth_city"),
-                        rs.getString("social_security_number"),
-                        rs.getString("addresses")
+                        rs.getString("social_security_number")
                     );
                 }
             }
