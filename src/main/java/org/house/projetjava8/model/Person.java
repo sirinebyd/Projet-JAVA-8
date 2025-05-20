@@ -8,10 +8,9 @@ public class Person {
     private String birthDate;
     private String birthCity;
     private String socialSecurityNumber;
-    private String addresses;
 
     public Person(int id, String lastName, String firstName, String gender, String birthDate,
-                  String birthCity, String socialSecurityNumber, String addresses) {
+                  String birthCity, String socialSecurityNumber) {
         this.id = id;
         this.lastName = lastName;
         this.firstName = firstName;
@@ -19,7 +18,6 @@ public class Person {
         this.birthDate = birthDate;
         this.birthCity = birthCity;
         this.socialSecurityNumber = socialSecurityNumber;
-        this.addresses = addresses;
     }
 
     // Getters & Setters
@@ -77,13 +75,5 @@ public class Person {
 
     public void setSocialSecurityNumber(String socialSecurityNumber) {
         this.socialSecurityNumber = socialSecurityNumber;
-    }
-
-    public String getAddresses() {
-        return addresses;
-    }
-
-    public void setAddresses(String addresses) {
-        this.addresses = addresses;
     }
 }
