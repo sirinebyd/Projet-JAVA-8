@@ -2,15 +2,18 @@ package org.house.projetjava8.model;
 
 public class Bed {
     private int id;
+    private String label;
+    private int capacity;
     private int roomId;
-    private boolean isAvailable;
 
-    public Bed(int id, int roomId, boolean isAvailable) {
+    public Bed(int id, String label, int capacity, int roomId) {
         this.id = id;
+        this.label = label;
+        this.capacity = capacity;
         this.roomId = roomId;
-        this.isAvailable = isAvailable;
     }
 
+   
     public int getId() {
         return id;
     }
@@ -19,20 +22,28 @@ public class Bed {
         this.id = id;
     }
 
+    public String getLabel() {
+        return label;
+    }
+
+    public void setLabel(String label) {
+        this.label = label;
+    }
+
+    public int getCapacity() {
+        return capacity;
+    }
+
+    public void setCapacity(int capacity) {
+        this.capacity = capacity;
+    }
+
     public int getRoomId() {
         return roomId;
     }
 
     public void setRoomId(int roomId) {
         this.roomId = roomId;
-    }
-
-    public boolean isAvailable() {
-        return isAvailable;
-    }
-
-    public void setAvailable(boolean available) {
-        isAvailable = available;
     }
 }
 
