@@ -1,7 +1,6 @@
 package org.house.projetjava8.model;
+
 import java.time.LocalDate;
-
-
 
 public class Occupation {
     private int id;
@@ -9,13 +8,15 @@ public class Occupation {
     private int bedId;
     private LocalDate startDate;
     private LocalDate endDate;
+    private boolean hasLeft;
 
-    public Occupation(int id, int personId, int bedId, LocalDate startDate, LocalDate endDate) {
+    public Occupation(int id, int personId, int bedId, LocalDate startDate, LocalDate endDate, boolean hasLeft) {
         this.id = id;
         this.personId = personId;
         this.bedId = bedId;
         this.startDate = startDate;
         this.endDate = endDate;
+        this.hasLeft = hasLeft;
     }
 
     public int getId() {
@@ -57,5 +58,12 @@ public class Occupation {
     public void setEndDate(LocalDate endDate) {
         this.endDate = endDate;
     }
-}
 
+    public boolean isHasLeft() {
+        return hasLeft;
+    }
+
+    public void setHasLeft(boolean hasLeft) {
+        this.hasLeft = hasLeft;
+    }
+}
