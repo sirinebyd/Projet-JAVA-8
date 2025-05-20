@@ -14,10 +14,11 @@ public class BedDAO {
     }
 
     public void add(Bed bed) throws SQLException {
-        String sql = "INSERT INTO bed (room_id, is_available) VALUES (?, ?)";
+        String sql = "INSERT INTO bed (label, capacity, room_id) VALUES (?, ?, ?)";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setInt(1, bed.getRoomId());
-            stmt.setBoolean(2, bed.isAvailable());
+            stmt.setString(1, bed.getLabel());
+            stmt.setInt(2, bed.getCapacity());
+            stmt.setInt(3, bed.getRoomId());
             stmt.executeUpdate();
         }
     }
@@ -29,8 +30,9 @@ public class BedDAO {
             while (rs.next()) {
                 Bed bed = new Bed(
                     rs.getInt("id"),
-                    rs.getInt("room_id"),
-                    rs.getBoolean("is_available")
+                    rs.getString("label"),
+                    rs.getInt("capacity"),
+                    rs.getInt("room_id")
                 );
                 beds.add(bed);
             }
@@ -46,8 +48,9 @@ public class BedDAO {
                 if (rs.next()) {
                     return new Bed(
                         rs.getInt("id"),
-                        rs.getInt("room_id"),
-                        rs.getBoolean("is_available")
+                        rs.getString("label"),
+                        rs.getInt("capacity"),
+                        rs.getInt("room_id")
                     );
                 }
             }
@@ -63,11 +66,13 @@ public class BedDAO {
         }
     }
 
-    public void updateAvailability(int id, boolean isAvailable) throws SQLException {
-        String sql = "UPDATE bed SET is_available = ? WHERE id = ?";
+    public void update(Bed bed) throws SQLException {
+        String sql = "UPDATE bed SET label = ?, capacity = ?, room_id = ? WHERE id = ?";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setBoolean(1, isAvailable);
-            stmt.setInt(2, id);
+            stmt.setString(1, bed.getLabel());
+            stmt.setInt(2, bed.getCapacity());
+            stmt.setInt(3, bed.getRoomId());
+            stmt.setInt(4, bed.getId());
             stmt.executeUpdate();
         }
     }
