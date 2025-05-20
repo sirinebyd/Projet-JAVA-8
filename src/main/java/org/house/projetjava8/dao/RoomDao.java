@@ -14,11 +14,12 @@ public class RoomDAO {
     }
 
     public void add(Room room) throws SQLException {
-        String sql = "INSERT INTO room (name, capacity, is_mixed) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO room (name, gender_restriction, min_age, max_age) VALUES (?, ?, ?, ?)";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setString(1, room.getName());
-            stmt.setInt(2, room.getCapacity());
-            stmt.setBoolean(3, room.isMixed());
+            stmt.setString(2, room.getGenderRestriction());
+            stmt.setInt(3, room.getMinAge());
+            stmt.setInt(4, room.getMaxAge());
             stmt.executeUpdate();
         }
     }
@@ -31,8 +32,9 @@ public class RoomDAO {
                 Room room = new Room(
                     rs.getInt("id"),
                     rs.getString("name"),
-                    rs.getInt("capacity"),
-                    rs.getBoolean("is_mixed")
+                    rs.getString("gender_restriction"),
+                    rs.getInt("min_age"),
+                    rs.getInt("max_age")
                 );
                 rooms.add(room);
             }
@@ -49,8 +51,9 @@ public class RoomDAO {
                     return new Room(
                         rs.getInt("id"),
                         rs.getString("name"),
-                        rs.getInt("capacity"),
-                        rs.getBoolean("is_mixed")
+                        rs.getString("gender_restriction"),
+                        rs.getInt("min_age"),
+                        rs.getInt("max_age")
                     );
                 }
             }
@@ -66,3 +69,4 @@ public class RoomDAO {
         }
     }
 }
+
