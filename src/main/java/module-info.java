@@ -2,6 +2,7 @@ module org.house.projetjava8 {
     requires javafx.controls;
     requires javafx.fxml;
     requires javafx.web;
+    requires java.sql;
 
     requires org.controlsfx.controls;
     requires com.dlsc.formsfx;
@@ -12,5 +13,6 @@ module org.house.projetjava8 {
     requires com.almasb.fxgl.all;
 
     opens org.house.projetjava8 to javafx.fxml;
+    opens org.house.projetjava8.ui to javafx.fxml;
     exports org.house.projetjava8;
 }
