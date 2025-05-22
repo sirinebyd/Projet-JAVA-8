@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+
+<VBox spacing="10" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml"
+      fx:controller="org.house.projetjava8.ui.CenterStatusController">
+    <Label text="Center Status"/>
+    <ScrollPane>
+        <GridPane fx:id="bedStatusGrid" hgap="10" vgap="10"/>
+    </ScrollPane>
+</VBox>
