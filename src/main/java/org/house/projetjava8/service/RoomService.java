@@ -40,4 +40,17 @@ public class RoomService {
             throw new RuntimeException("Failed to delete: " + e.getMessage(), e);
         }
     }
+    public boolean deleteRoomIfPossible(int roomId) {
+    List<Bed> beds = bedService.getBedsByRoom(roomId);
+    for (Bed b : beds) {
+        if (bedDao.isBedInUse(b.getId())) {
+            throw new IllegalStateException("At least one bed in this room is occupied.");
+        }
+    }
+    // Supprimer tous les lits avant la salle
+    for (Bed b : beds) {
+        bedDao.deleteBed(b.getId());
+    }
+    return roomDao.deleteRoom(roomId);
+}
 }
