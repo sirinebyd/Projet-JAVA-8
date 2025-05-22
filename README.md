@@ -30,7 +30,7 @@ Ce projet permet de gérer les chambres, lits, personnes hébergées et leurs af
 ---
 
 ## Structure du projet
-
+```text
 Projet-JAVA-8/
 ├── src/
 │   └── main/
@@ -48,4 +48,4 @@ Projet-JAVA-8/
 │   └── hopital.db               # Base de données SQLite
 ├── pom.xml                      # Configuration Maven
 └── README.md                    # Présentation du projet
-
+```
