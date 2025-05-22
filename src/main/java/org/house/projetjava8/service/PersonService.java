@@ -3,26 +3,41 @@ package org.house.projetjava8.service;
 import org.house.projetjava8.dao.PersonDao;
 import org.house.projetjava8.model.Person;
 
-import java.sql.SQLException;
 import java.util.List;
+import java.sql.SQLException;
 
 public class PersonService {
-
-    private final PersonDao personDao = new PersonDao();
-
-    public void addPerson(Person person) {
-        try {
-            personDao.add(person);
-        } catch (SQLException e) {
-            throw new RuntimeException("Failed to add person: " + e.getMessage(), e);
-        }
-    }
+    private final PersonDao dao = new PersonDao();
 
     public List<Person> getAll() {
         try {
-            return personDao.getAll();
-        } catch (SQLException e) {
-            throw new RuntimeException("Failed to get persons: " + e.getMessage(), e);
+            return dao.getAll();
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to getAll: " + e.getMessage(), e);
+        }
+    }
+
+    public Person getById(int id) {
+        try {
+            return dao.getById(id);
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to getById: " + e.getMessage(), e);
+        }
+    }
+
+    public void save(Person person) {
+        try {
+            dao.add(person);
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to save: " + e.getMessage(), e);
+        }
+    }
+
+    public void delete(int id) {
+        try {
+            dao.delete(id);
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to delete: " + e.getMessage(), e);
         }
     }
 }
