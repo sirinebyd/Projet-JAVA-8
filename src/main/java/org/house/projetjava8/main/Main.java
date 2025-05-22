@@ -1,4 +1,4 @@
-import org.house.projetjava8.database.DatabaseManager;
+import org.house.projetjava8.dao.DatabaseManager;
 import org.house.projetjava8.model.*;
 
 import java.time.LocalDate;
