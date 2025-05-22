@@ -12,15 +12,15 @@ public class PersonService {
 
     public void addPerson(Person person) {
         try {
-            personDao.addPerson(person);
+            personDao.add(person);
         } catch (SQLException e) {
             throw new RuntimeException("Failed to add person: " + e.getMessage(), e);
         }
     }
 
-    public List<Person> getAllPersons() {
+    public List<Person> getAll() {
         try {
-            return personDao.getAllPersons();
+            return personDao.getAll();
         } catch (SQLException e) {
             throw new RuntimeException("Failed to get persons: " + e.getMessage(), e);
         }
