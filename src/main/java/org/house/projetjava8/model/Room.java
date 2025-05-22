@@ -3,10 +3,9 @@ package org.house.projetjava8.model;
 public class Room {
     private int id;
     private String name;
-    private String genderRestriction;
-    private int minAge;
-    private int maxAge;
-
+    private String genderRestriction = "ALL"; // "M", "F", or "ALL"
+    private int minAge = 0;
+    private int maxAge = 120;
     public Room(int id, String name, String genderRestriction, int minAge, int maxAge) {
         this.id = id;
         this.name = name;
