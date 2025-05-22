@@ -76,4 +76,17 @@ public class BedDAO {
             stmt.executeUpdate();
         }
     }
+    public boolean isBedInUse(int bedId) {
+    String sql = "SELECT COUNT(*) FROM occupations WHERE bed_id = ?";
+    try (Connection conn = db.getConnection();
+         PreparedStatement stmt = conn.prepareStatement(sql)) {
+        stmt.setInt(1, bedId);
+        ResultSet rs = stmt.executeQuery();
+        return rs.next() && rs.getInt(1) > 0;
+    } catch (SQLException e) {
+        e.printStackTrace();
+        return true;
+    }
+}
+
 }
