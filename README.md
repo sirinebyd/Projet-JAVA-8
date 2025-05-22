@@ -1,11 +1,11 @@
-# 🏠 Projet Java 8 - CY-SIAO
+# Projet Java 8 - CY-SIAO
 
 **Application de gestion d’hébergement social** développée en JavaFX avec une base de données SQLite.  
 Ce projet permet de gérer les chambres, lits, personnes hébergées et leurs affectations, avec interface graphique.
 
 ---
 
-## 📚 Fonctionnalités principales
+## Fonctionnalités principales
 
 - Gestion des **personnes** (nom, prénom, date de naissance, etc.)
 - Gestion des **chambres** (capacités, restrictions d'âge ou de genre)
@@ -16,7 +16,7 @@ Ce projet permet de gérer les chambres, lits, personnes hébergées et leurs af
 
 ---
 
-## 🧱 Technologies utilisées
+## Technologies utilisées
 
 | Outil          | Description                         |
 |----------------|-------------------------------------|
@@ -29,6 +29,6 @@ Ce projet permet de gérer les chambres, lits, personnes hébergées et leurs af
 
 ---
 
-## 🏗️ Structure du projet
+## Structure du projet
 
 
