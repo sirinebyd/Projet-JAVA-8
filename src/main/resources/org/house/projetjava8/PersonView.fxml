@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox spacing="10" xmlns="http://javafx.com/javafx/8.0.111"
+      xmlns:fx="http://javafx.com/fxml" fx:controller="org.house.projetjava8.ui.PersonController">
+
+    <Label text="Add Person"/>
+    <HBox spacing="10">
+        <TextField fx:id="firstNameField" promptText="First Name"/>
+        <TextField fx:id="lastNameField" promptText="Last Name"/>
+    </HBox>
+    <HBox spacing="10">
+        <ComboBox fx:id="genderComboBox" promptText="Gender"/>
+        <DatePicker fx:id="birthDatePicker"/>
+    </HBox>
+    <HBox spacing="10">
+        <TextField fx:id="cityField" promptText="City"/>
+        <TextField fx:id="socialNumberField" promptText="Social Number"/>
+    </HBox>
+    <Button text="Add Person" onAction="#onAddPerson"/>
+    <TableView fx:id="personTable" prefHeight="200"/>
+</VBox>
