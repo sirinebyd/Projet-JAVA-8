@@ -33,3 +33,20 @@ public class DatabaseManager {
         }
     }
 }
+
+    private static PersonDAO personDAO = new PersonDAO();
+    private static RoomDAO roomDAO = new RoomDAO();
+    private static BedDAO bedDAO = new BedDAO();
+
+    public static PersonDAO getPersonDAO() {
+        return personDAO;
+    }
+
+    public static RoomDAO getRoomDAO() {
+        return roomDAO;
+    }
+
+    public static BedDAO getBedDAO() {
+        return bedDAO;
+    }
+}
