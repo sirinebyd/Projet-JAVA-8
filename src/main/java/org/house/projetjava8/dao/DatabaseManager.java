@@ -32,7 +32,6 @@ public class DatabaseManager {
             }
         }
     }
-}
 
     private static PersonDAO personDAO = new PersonDAO();
     private static RoomDAO roomDAO = new RoomDAO();
