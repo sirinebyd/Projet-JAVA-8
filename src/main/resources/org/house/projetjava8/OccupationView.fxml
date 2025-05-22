@@ -14,5 +14,16 @@
         <CheckBox fx:id="exitedCheckBox" text="Exited"/>
     </HBox>
     <Button text="Add Occupation" onAction="#onAddOccupation"/>
-    <TableView fx:id="occupationTable" prefHeight="200"/>
+
+<TableView fx:id="occupationTable" prefHeight="200">
+        <columns>
+            <TableColumn fx:id="colPersonId" text="Person ID"/>
+            <TableColumn fx:id="colBedId" text="Bed ID"/>
+            <TableColumn fx:id="colDebut" text="Start Date"/>
+            <TableColumn fx:id="colFin" text="End Date"/>
+            <TableColumn fx:id="colSortie" text="Exited"/>
+        </columns>
+    </TableView>
+
 </VBox>
+
