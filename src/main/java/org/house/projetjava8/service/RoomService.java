@@ -1,23 +1,43 @@
 package org.house.projetjava8.service;
 
-import org.house.projetjava8.dao.RoomDAO;
+import org.house.projetjava8.dao.RoomDao;
 import org.house.projetjava8.model.Room;
 
-import java.sql.SQLException;
 import java.util.List;
+import java.sql.SQLException;
 
 public class RoomService {
-    private final RoomDAO roomDAO;
+    private final RoomDao dao = new RoomDao();
 
-    public RoomService(RoomDAO roomDAO) {
-        this.roomDAO = roomDAO;
+    public List<Room> getAll() {
+        try {
+            return dao.getAll();
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to getAll: " + e.getMessage(), e);
+        }
     }
 
-    public List<Room> getAllRooms() throws SQLException {
-        return roomDAO.getAll();
+    public Room getById(int id) {
+        try {
+            return dao.getById(id);
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to getById: " + e.getMessage(), e);
+        }
     }
 
-    public Room getRoomById(int id) throws SQLException {
-        return roomDAO.getById(id);
+    public void save(Room room) {
+        try {
+            dao.add(room);
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to save: " + e.getMessage(), e);
+        }
+    }
+
+    public void delete(int id) {
+        try {
+            dao.delete(id);
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to delete: " + e.getMessage(), e);
+        }
     }
 }
