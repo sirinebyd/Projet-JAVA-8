@@ -35,24 +35,30 @@ public class EtatCentreController {
             if (col > 5) { col = 0; row++; }
         }
     }
-
     private Image getBedImage(Bed bed) {
-        List<Occupation> occs = occupationService.getOccupationsForBed(bed.getId());
-        LocalDate today = LocalDate.now();
+    List<Occupation> occs = occupationService.getOccupationsForBed(bed.getId());
+    LocalDate today = LocalDate.now();
 
-        for (Occupation occ : occs) {
-            if (!occ.isExited() && !today.isAfter(occ.getEndDate())) {
-                long joursRestants = ChronoUnit.DAYS.between(today, occ.getEndDate());
+    for (Occupation occ : occs) {
+        if (!occ.isExited() && !today.isAfter(occ.getEndDate())) {
+            long joursRestants = ChronoUnit.DAYS.between(today, occ.getEndDate());
 
-                if (joursRestants > 14) {
-                    return new Image(getClass().getResource("/img/bed_red.png").toString());
-                } else if (joursRestants > 7) {
-                    return new Image(getClass().getResource("/img/bed_yellow.png").toString());
-                } else {
-                    return new Image(getClass().getResource("/img/bed_green.png").toString());
-                }
+            boolean coupure = occupationService.hasCoupure(bed.getId(), today, occ.getEndDate());
+
+            if (coupure) {
+                return new Image(getClass().getResource("/img/bed_coupure.png").toString()); // à créer
+            }
+
+            if (joursRestants > 14) {
+                return new Image(getClass().getResource("/img/bed_red.png").toString());
+            } else if (joursRestants > 7) {
+                return new Image(getClass().getResource("/img/bed_yellow.png").toString());
+            } else {
+                return new Image(getClass().getResource("/img/bed_green.png").toString());
             }
         }
-        return new Image(getClass().getResource("/img/bed_white.png").toString());
     }
+    return new Image(getClass().getResource("/img/bed_white.png").toString());
+}
+
 }
