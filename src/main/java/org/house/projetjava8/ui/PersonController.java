@@ -27,4 +27,14 @@ public class PersonController {
         person.setSocialSecurityNumber(ssnField.getText());
         service.save(person);
     }
+    @FXML
+private void handleDeletePerson() {
+    try {
+        personService.deletePersonIfPossible(selectedPerson.getId());
+        refreshPersonList();
+    } catch (IllegalStateException e) {
+        showAlert("Erreur de suppression", e.getMessage());
+    }
+}
+
 }
