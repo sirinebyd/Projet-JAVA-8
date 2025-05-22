@@ -48,4 +48,11 @@ public class OccupationService {
             throw new RuntimeException("Failed to delete: " + e.getMessage(), e);
         }
     }
+    public boolean isPersonCompatibleWithRoom(Person person, Room room) {
+    int age = person.calculateAge(); // Crée cette méthode si elle n'existe pas
+    boolean ageOk = age >= room.getMinAge() && age <= room.getMaxAge();
+    boolean genderOk = room.getGenderRestriction().equals("ALL") ||
+                       room.getGenderRestriction().equalsIgnoreCase(person.getGender());
+    return ageOk && genderOk;
+}
 }
