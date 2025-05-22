@@ -55,4 +55,14 @@ public class OccupationService {
                        room.getGenderRestriction().equalsIgnoreCase(person.getGender());
     return ageOk && genderOk;
 }
+    public boolean isBedAvailable(int bedId, LocalDate start, LocalDate end) {
+    List<Occupation> occupations = occupationDao.getOccupationsForBed(bedId);
+
+    for (Occupation o : occupations) {
+        if (!(end.isBefore(o.getStartDate()) || start.isAfter(o.getEndDate()))) {
+            return false;
+        }
+    }
+    return true;
+}
 }
