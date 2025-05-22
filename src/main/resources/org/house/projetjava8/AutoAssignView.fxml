@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox spacing="10" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml"
+      fx:controller="org.house.projetjava8.ui.AutoAssignController">
+    <Label text="Automatic Assignment"/>
+    <HBox spacing="10">
+        <DatePicker fx:id="fromDatePicker"/>
+        <DatePicker fx:id="toDatePicker"/>
+        <TextField fx:id="numberOfPeopleField" promptText="Number of People"/>
+        <CheckBox fx:id="sameRoomCheckBox" text="Same Room"/>
+    </HBox>
+    <Button text="Search Slot" onAction="#onSearchSlot"/>
+    <TableView fx:id="peopleCriteriaTable" prefHeight="200"/>
+</VBox>
