@@ -42,10 +42,12 @@ Projet-JAVA-8/
 │       │       ├── ui/          # Contrôleurs JavaFX (FXML)
 │       │       └── db/          # Connexion à SQLite (DataManager)
 │       └── resources/
+|           └── db
+|               └── database.db  # Base de données SQLite
+|           └── img
 │           └── org.house.projetjava8.ui/
 │               └── *.fxml       # Interfaces graphiques (FXML)
-├── database/
-│   └── hopital.db               # Base de données SQLite
+|              
 ├── pom.xml                      # Configuration Maven
 └── README.md                    # Présentation du projet
 ```
