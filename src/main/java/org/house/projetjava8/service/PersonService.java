@@ -32,6 +32,12 @@ public class PersonService {
             throw new RuntimeException("Failed to save: " + e.getMessage(), e);
         }
     }
+    public boolean deletePersonIfPossible(int personId) {
+    if (personDao.isPersonInUse(personId)) {
+        throw new IllegalStateException("This person is linked to active occupations.");
+    }
+    return personDao.deletePerson(personId);
+}
 
     public void delete(int id) {
         try {
