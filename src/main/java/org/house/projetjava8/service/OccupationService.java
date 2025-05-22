@@ -65,4 +65,29 @@ public class OccupationService {
     }
     return true;
 }
+    public boolean hasCoupure(int bedId, LocalDate rangeStart, LocalDate rangeEnd) {
+    List<Occupation> occupations = occupationDao.getOccupationsForBed(bedId);
+    occupations.sort(Comparator.comparing(Occupation::getStartDate));
+
+    LocalDate expected = rangeStart;
+
+    for (Occupation occ : occupations) {
+        if (occ.getEndDate().isBefore(rangeStart) || occ.getStartDate().isAfter(rangeEnd)) {
+            continue; // hors de la plage concernée
+        }
+
+        if (occ.getStartDate().isAfter(expected)) {
+            // Trouvé une coupure
+            return true;
+        }
+
+        // Actualise la date attendue
+        if (occ.getEndDate().isAfter(expected)) {
+            expected = occ.getEndDate().plusDays(1);
+        }
+    }
+
+    return false;
+}
+
 }
