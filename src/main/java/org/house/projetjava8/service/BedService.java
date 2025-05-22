@@ -48,4 +48,11 @@ public class BedService {
             throw new RuntimeException("Failed to delete: " + e.getMessage(), e);
         }
     }
+    public boolean deleteBedIfPossible(int bedId) {
+    if (bedDao.isBedInUse(bedId)) {
+        throw new IllegalStateException("This bed is currently in use.");
+    }
+    return bedDao.deleteBed(bedId);
+}
+
 }
