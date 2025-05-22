@@ -1,0 +1,29 @@
+<AnchorPane xmlns:fx="http://javafx.com/fxml" fx:controller="org.house.projetjava8.ui.EtatCentreController">
+    <VBox spacing="10" AnchorPane.topAnchor="10" AnchorPane.leftAnchor="10" AnchorPane.rightAnchor="10">
+        <Label text="État du centre d'hébergement" style="-fx-font-size: 18px;"/>
+        <GridPane fx:id="bedGrid" hgap="10" vgap="10" />
+        <HBox spacing="10">
+            <Label text="Légende :" />
+            <ImageView fitHeight="20" fitWidth="20">
+                <image>
+                    <Image url="@../img/bed_red.png"/>
+                </image>
+            </ImageView><Label text="> 14 jours"/>
+            <ImageView fitHeight="20" fitWidth="20">
+                <image>
+                    <Image url="@../img/bed_yellow.png"/>
+                </image>
+            </ImageView><Label text="7–14 jours"/>
+            <ImageView fitHeight="20" fitWidth="20">
+                <image>
+                    <Image url="@../img/bed_green.png"/>
+                </image>
+            </ImageView><Label text="< 7 jours"/>
+            <ImageView fitHeight="20" fitWidth="20">
+                <image>
+                    <Image url="@../img/bed_white.png"/>
+                </image>
+            </ImageView><Label text="Libre"/>
+        </HBox>
+    </VBox>
+</AnchorPane>

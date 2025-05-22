@@ -25,4 +25,14 @@ public class MainController {
             e.printStackTrace();
         }
     }
+    @FXML
+private void handleEtatCentre() throws IOException {
+    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/EtatCentre.fxml"));
+    Parent root = fxmlLoader.load();
+    Stage stage = new Stage();
+    stage.setTitle("État du centre");
+    stage.setScene(new Scene(root));
+    stage.show();
+}
+
 }
