@@ -31,4 +31,21 @@ Ce projet permet de gérer les chambres, lits, personnes hébergées et leurs af
 
 ## Structure du projet
 
+Projet-JAVA-8/
+├── src/
+│   └── main/
+│       ├── java/
+│       │   └── org.house.projetjava8/
+│       │       ├── model/       # Entités : Person, Room, Bed, etc.
+│       │       ├── dao/         # Accès base de données (DAO)
+│       │       ├── service/     # Logique métier (filtrage, validation)
+│       │       ├── ui/          # Contrôleurs JavaFX (FXML)
+│       │       └── db/          # Connexion à SQLite (DataManager)
+│       └── resources/
+│           └── org.house.projetjava8.ui/
+│               └── *.fxml       # Interfaces graphiques (FXML)
+├── database/
+│   └── hopital.db               # Base de données SQLite
+├── pom.xml                      # Configuration Maven
+└── README.md                    # Présentation du projet
 
