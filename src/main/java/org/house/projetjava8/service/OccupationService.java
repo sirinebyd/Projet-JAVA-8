@@ -1,44 +1,51 @@
 package org.house.projetjava8.service;
 
-import org.house.projetjava8.dao.LitDAO;
-import org.house.projetjava8.model.Lit;
+import org.house.projetjava8.dao.OccupationDao;
 import org.house.projetjava8.model.Occupation;
-import org.house.projetjava8.model.OccupancyRequest;
 
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
+import java.sql.SQLException;
 
 public class OccupationService {
+    private final OccupationDao dao = new OccupationDao();
 
-    private final LitDAO litDAO = new LitDAO();
-  
-    public List<Occupation> genererOccupations(OccupancyRequest request) throws SQLException {
-        List<Occupation> resultats = new ArrayList<>();
-
-        List<Lit> litsDisponibles = litDAO.trouverLitsDisponibles(
-                request.getGenre(), request.getDateDebut(), request.getDateFin()
-        );
-
-        int personnesAReloger = request.getNombrePersonnes();
-
-        for (Lit lit : litsDisponibles) {
-            int places = lit.getNbPlaces();
-
-            for (int i = 0; i < places && personnesAReloger > 0; i++) {
-                Occupation o = new Occupation();
-                o.setLitId(lit.getId());
-                o.setDateDebut(request.getDateDebut());
-                o.setDateFin(request.getDateFin());
-                o.setSortie(false);
-
-                resultats.add(o);
-                personnesAReloger--;
-            }
-
-            if (personnesAReloger == 0) break;
+    public List<Occupation> getAll() {
+        try {
+            return dao.getAll();
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to getAll: " + e.getMessage(), e);
         }
+    }
 
-        return resultats;
+    public Occupation getById(int id) {
+        try {
+            return dao.getById(id);
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to getById: " + e.getMessage(), e);
+        }
+    }
+
+    public void save(Occupation occupation) {
+        try {
+            dao.add(occupation);
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to save: " + e.getMessage(), e);
+        }
+    }
+
+    public void update(Occupation occupation) {
+        try {
+            dao.updateHasLeft(occupation);
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to update: " + e.getMessage(), e);
+        }
+    }
+
+    public void delete(int id) {
+        try {
+            dao.delete(id);
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to delete: " + e.getMessage(), e);
+        }
     }
 }
