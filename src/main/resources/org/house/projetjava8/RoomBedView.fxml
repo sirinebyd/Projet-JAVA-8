@@ -16,6 +16,18 @@
             </HBox>
             <Button text="Add Room" onAction="#onAddRoom"/>
         </VBox>
+<ComboBox fx:id="genderComboBox">
+    <items>
+        <FXCollections fx:factory="observableArrayList">
+            <String fx:value="ALL"/>
+            <String fx:value="M"/>
+            <String fx:value="F"/>
+        </FXCollections>
+    </items>
+</ComboBox>
+
+<TextField fx:id="minAgeField"/>
+<TextField fx:id="maxAgeField"/>
     </top>
     <center>
         <TableView fx:id="roomTable" prefHeight="200"/>
