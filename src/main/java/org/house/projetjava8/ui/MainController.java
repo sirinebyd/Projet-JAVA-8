@@ -1,37 +1,27 @@
-package org.house.projetjava8.ui;
+package org.house.projetjava8.controller;
 
 import javafx.fxml.FXML;
+import javafx.scene.layout.BorderPane;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.layout.StackPane;
-
-import java.io.IOException;
 
 public class MainController {
-
     @FXML
-    private StackPane contentPane;
+    private BorderPane mainPane;
 
-    @FXML
-    private void handleShowOccupants() {
-        loadView("/org/house/projetjava8/ui/OccupantView.fxml"); // à créer
+    public void showPersonView() {
+        loadView("/view/person_view.fxml");
     }
 
-    @FXML
-    private void handleShowRooms() {
-        loadView("/org/house/projetjava8/ui/RoomView.fxml"); // à créer
-    }
-
-    @FXML
-    private void handleShowAssignments() {
-        loadView("/org/house/projetjava8/ui/AssignementView.fxml"); // à créer
+    public void showRoomView() {
+        loadView("/view/room_view.fxml");
     }
 
     private void loadView(String fxmlPath) {
         try {
-            Node node = FXMLLoader.load(getClass().getResource(fxmlPath));
-            contentPane.getChildren().setAll(node);
-        } catch (IOException e) {
+            Node view = FXMLLoader.load(getClass().getResource(fxmlPath));
+            mainPane.setCenter(view);
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
