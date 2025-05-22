@@ -25,4 +25,22 @@ public class OccupationController {
         occupation.setHasLeft(Boolean.parseBoolean(hasLeftField.getText()));
         service.save(occupation);
     }
+    @FXML
+private void handleProposerAffectation() {
+    List<Person> personnes = getSelectedPersons(); // À implémenter
+    LocalDate debut = debutDatePicker.getValue();
+    LocalDate fin = finDatePicker.getValue();
+    boolean memeSalle = memeSalleCheckBox.isSelected();
+
+    BedAssignmentEngine moteur = new BedAssignmentEngine(roomService, bedService, occupationService);
+    Map<Person, Bed> proposition = moteur.proposerAffectation(personnes, debut, fin, memeSalle);
+
+    if (proposition.isEmpty()) {
+        showAlert("Aucune affectation possible", "Aucune combinaison trouvée.");
+    } else {
+        afficherProposition(proposition); // À créer
+    }
+}
+
+
 }
