@@ -33,10 +33,10 @@ public class PersonService {
         }
     }
     public boolean deletePersonIfPossible(int personId) {
-    if (PersonDAO.isPersonInUse(personId)) {
+    if (dao.isPersonInUse(personId)) {
         throw new IllegalStateException("This person is linked to active occupations.");
     }
-    return PersonDAO.deletePerson(personId);
+    return dao.deletePerson(personId);
 }
 
     public void delete(int id) {
