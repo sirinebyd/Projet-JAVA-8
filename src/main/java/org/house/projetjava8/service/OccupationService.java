@@ -1,13 +1,17 @@
 package org.house.projetjava8.service;
 
-import org.house.projetjava8.dao.OccupationDao;
+import org.house.projetjava8.dao.OccupationDAO;
 import org.house.projetjava8.model.Occupation;
+import org.house.projetjava8.model.Person;
+import org.house.projetjava8.model.Room;
 
+import java.time.LocalDate;
+import java.util.Comparator;
 import java.util.List;
 import java.sql.SQLException;
 
 public class OccupationService {
-    private final OccupationDao dao = new OccupationDao();
+    private final OccupationDAO dao = new OccupationDAO();
 
     public List<Occupation> getAll() {
         try {
@@ -56,7 +60,7 @@ public class OccupationService {
     return ageOk && genderOk;
 }
     public boolean isBedAvailable(int bedId, LocalDate start, LocalDate end) {
-    List<Occupation> occupations = occupationDao.getOccupationsForBed(bedId);
+    List<Occupation> occupations = OccupationDAO.getOccupationsForBed(bedId);
 
     for (Occupation o : occupations) {
         if (!(end.isBefore(o.getStartDate()) || start.isAfter(o.getEndDate()))) {
@@ -66,7 +70,7 @@ public class OccupationService {
     return true;
 }
     public boolean hasCoupure(int bedId, LocalDate rangeStart, LocalDate rangeEnd) {
-    List<Occupation> occupations = occupationDao.getOccupationsForBed(bedId);
+    List<Occupation> occupations = OccupationDAO.getOccupationsForBed(bedId);
     occupations.sort(Comparator.comparing(Occupation::getStartDate));
 
     LocalDate expected = rangeStart;

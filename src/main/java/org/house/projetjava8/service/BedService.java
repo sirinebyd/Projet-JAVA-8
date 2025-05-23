@@ -1,13 +1,13 @@
 package org.house.projetjava8.service;
 
-import org.house.projetjava8.dao.BedDao;
+import org.house.projetjava8.dao.BedDAO;
 import org.house.projetjava8.model.Bed;
 
 import java.util.List;
 import java.sql.SQLException;
 
 public class BedService {
-    private final BedDao dao = new BedDao();
+    private final BedDAO dao = new BedDAO();
 
     public List<Bed> getAll() {
         try {
@@ -49,10 +49,10 @@ public class BedService {
         }
     }
     public boolean deleteBedIfPossible(int bedId) {
-    if (bedDao.isBedInUse(bedId)) {
+    if (BedDAO.isBedInUse(bedId)) {
         throw new IllegalStateException("This bed is currently in use.");
     }
-    return bedDao.deleteBed(bedId);
+    return BedDAO.deleteBed(bedId);
 }
 
 }
