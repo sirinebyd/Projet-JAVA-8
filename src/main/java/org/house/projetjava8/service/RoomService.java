@@ -4,6 +4,9 @@ import org.house.projetjava8.dao.BedDAO;
 import org.house.projetjava8.dao.RoomDAO;
 import org.house.projetjava8.model.Bed;
 import org.house.projetjava8.model.Room;
+import org.house.projetjava8.model.Bed;
+import org.house.projetjava8.service.BedService;
+import org.house.projetjava8.dao.BedDAO;
 
 import java.util.List;
 import java.sql.SQLException;
@@ -12,6 +15,8 @@ import org.house.projetjava8.service.BedService;
 
 public class RoomService {
     private final RoomDAO dao = new RoomDAO();
+    private final BedService bedService = new BedService();
+    private final BedDAO bedDao = new BedDAO()
 
     public List<Room> getAll() {
         try {
@@ -45,16 +50,16 @@ public class RoomService {
         }
     }
     public boolean deleteRoomIfPossible(int roomId) {
-    List<Bed> beds = BedService.getBedsByRoom(roomId);
+    List<Bed> beds = bedService.getBedsByRoom(roomId);
     for (Bed b : beds) {
-        if (BedDAO.isBedInUse(b.getId())) {
+        if (BedDao.isBedInUse(b.getId())) {
             throw new IllegalStateException("At least one bed in this room is occupied.");
         }
     }
     // Supprimer tous les lits avant la salle
     for (Bed b : beds) {
-        BedDAO.deleteBed(b.getId());
+        BedDao.deleteBed(b.getId());
     }
-    return RoomDAO.deleteRoom(roomId);
+    return dao.deleteRoom(roomId);
 }
 }
