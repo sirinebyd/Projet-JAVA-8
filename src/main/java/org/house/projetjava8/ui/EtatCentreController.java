@@ -18,12 +18,12 @@ public class EtatCentreController {
     @FXML
     private GridPane bedGrid;
 
-    private BedService bedService = new BedService();
+    private BedService BedService = new BedService();
     private OccupationService occupationService = new OccupationService();
 
     @FXML
     public void initialize() {
-        List<Bed> beds = bedService.getAllBeds();
+        List<Bed> beds = BedService.getAllBeds();
         int col = 0, row = 0;
 
         for (Bed bed : beds) {

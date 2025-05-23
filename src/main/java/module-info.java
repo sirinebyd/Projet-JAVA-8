@@ -23,6 +23,8 @@ module org.house.projetjava8 {
     requires com.almasb.fxgl.all;
     requires org.junit.jupiter.api;
     requires org.opentest4j;
+    requires org.junit.platform.commons;
+    requires org.apiguardian.api;
 
     opens org.house.projetjava8 to javafx.fxml;
     opens org.house.projetjava8.ui to javafx.fxml;

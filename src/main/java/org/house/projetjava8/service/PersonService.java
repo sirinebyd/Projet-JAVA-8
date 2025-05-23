@@ -1,13 +1,13 @@
 package org.house.projetjava8.service;
 
-import org.house.projetjava8.dao.PersonDao;
+import org.house.projetjava8.dao.PersonDAO;
 import org.house.projetjava8.model.Person;
 
 import java.util.List;
 import java.sql.SQLException;
 
 public class PersonService {
-    private final PersonDao dao = new PersonDao();
+    private final PersonDAO dao = new PersonDAO();
 
     public List<Person> getAll() {
         try {
@@ -33,10 +33,10 @@ public class PersonService {
         }
     }
     public boolean deletePersonIfPossible(int personId) {
-    if (personDao.isPersonInUse(personId)) {
+    if (PersonDAO.isPersonInUse(personId)) {
         throw new IllegalStateException("This person is linked to active occupations.");
     }
-    return personDao.deletePerson(personId);
+    return PersonDAO.deletePerson(personId);
 }
 
     public void delete(int id) {

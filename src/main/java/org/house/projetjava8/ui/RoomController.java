@@ -1,4 +1,4 @@
-package org.house.projetjava8.controller;
+package org.house.projetjava8.ui;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
@@ -25,7 +25,7 @@ public class RoomController {
     @FXML
 private void handleDeleteRoom() {
     try {
-        roomService.deleteRoomIfPossible(selectedRoom.getId());
+        RoomService.deleteRoomIfPossible(selectedRoom.getId());
         refreshRoomList();
     } catch (IllegalStateException e) {
         showAlert("Erreur", e.getMessage());
