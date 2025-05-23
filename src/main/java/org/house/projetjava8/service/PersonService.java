@@ -1,10 +1,10 @@
 package org.house.projetjava8.service;
 
+import java.sql.SQLException;
+import java.util.List;
+
 import org.house.projetjava8.dao.PersonDAO;
 import org.house.projetjava8.model.Person;
-
-import java.util.List;
-import java.sql.SQLException;
 
 public class PersonService {
     private static final PersonDAO dao = new PersonDAO();
@@ -32,6 +32,9 @@ public class PersonService {
             throw new RuntimeException("Failed to save: " + e.getMessage(), e);
         }
     }
+
+
+
     public static boolean deletePersonIfPossible(int personId) throws SQLException {
     if (dao.isPersonInUse(personId)) {
         throw new IllegalStateException("This person is linked to active occupations.");
@@ -49,7 +52,7 @@ public class PersonService {
 
     public void add(Person person) {
         try {
-            PersonDAO.add(person);
+            dao.add(person);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -58,9 +61,13 @@ public class PersonService {
 
     public void addPerson(Person p) {
         try {
-            PersonDAO.add(p);
+            dao.add(p);
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+    
+    public void update(Person person) {
+        dao.update(person);
     }
 }

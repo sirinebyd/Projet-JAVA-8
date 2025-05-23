@@ -1,6 +1,6 @@
 package org.house.projetjava8.model;
+
 import java.time.LocalDate;
-import java.util.List;
 
 public class OccupancyRequest {
     private int numberOfPeople;
@@ -11,9 +11,11 @@ public class OccupancyRequest {
     private int minAge;
     private int maxAge;
 
-    public OccupancyRequest() {}
+    public OccupancyRequest() {
+    }
 
-    public OccupancyRequest(int numberOfPeople, LocalDate startDate, LocalDate endDate, boolean sameRoom, String gender, int minAge, int maxAge) {
+    public OccupancyRequest(int numberOfPeople, LocalDate startDate, LocalDate endDate, boolean sameRoom, String gender,
+            int minAge, int maxAge) {
         this.numberOfPeople = numberOfPeople;
         this.startDate = startDate;
         this.endDate = endDate;
@@ -23,15 +25,12 @@ public class OccupancyRequest {
         this.maxAge = maxAge;
     }
 
-
-
     public OccupancyRequest(int nb, String g, String dDebut, String dFin) {
         this.numberOfPeople = nb;
         this.gender = g;
         this.startDate = LocalDate.parse(dDebut);
         this.endDate = LocalDate.parse(dFin);
     }
-
 
     public int getNumberOfPeople() {
         return numberOfPeople;

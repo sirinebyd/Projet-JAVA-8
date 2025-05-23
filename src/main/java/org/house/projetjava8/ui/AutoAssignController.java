@@ -1,52 +1,73 @@
 package org.house.projetjava8.ui;
 
-import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.layout.VBox;
-import org.house.projetjava8.service.OccupancyRequestService;
-import org.house.projetjava8.model.OccupancyRequest;
-import org.house.projetjava8.model.Room;
-
+import java.time.LocalDate;
 import java.util.List;
+
+import org.house.projetjava8.model.AutoAssignment;
+import org.house.projetjava8.service.AutoAssignService;
+
+import javafx.collections.FXCollections;
+import javafx.fxml.FXML;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.Spinner;
+import javafx.scene.control.SpinnerValueFactory;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 
 public class AutoAssignController {
 
-    @FXML
-    private VBox roomResultsBox;
+    private final AutoAssignService assignService = new AutoAssignService();
 
     @FXML
-    private Label resultLabel;
+    private Spinner<Integer> nbPersonSpinner;
+    @FXML
+    private DatePicker startDatePicker;
+    @FXML
+    private DatePicker endDatePicker;
+    @FXML
+    private CheckBox sameRoomCheckBox;
 
     @FXML
-    private Button assignButton;
+    private TableView<AutoAssignment> propositionTable;
+    @FXML
+    private TableColumn<AutoAssignment, String> colAssignedPerson;
+    @FXML
+    private TableColumn<AutoAssignment, String> colAssignedBed;
+    @FXML
+    private TableColumn<AutoAssignment, String> colAssignedRoom;
 
-    private final OccupancyRequestService requestService;
-
-    public AutoAssignController() {
-        // Tu peux injecter le DAO via un singleton ici si nécessaire
-        this.requestService = new OccupancyRequestService();
-    }
+    private List<AutoAssignment> currentAssignments;
 
     @FXML
     public void initialize() {
-        resultLabel.setText("Appuie sur 'Assigner' pour générer des propositions.");
+        nbPersonSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 10, 1));
+
+        colAssignedPerson.setCellValueFactory(data -> data.getValue().personNameProperty());
+        colAssignedBed.setCellValueFactory(data -> data.getValue().bedLabelProperty());
+        colAssignedRoom.setCellValueFactory(data -> data.getValue().roomNameProperty());
     }
 
     @FXML
-    private void handleAutoAssign() {
-        // Exemple de requête simulée
-        OccupancyRequest request = new OccupancyRequest(2, "F", "2025-06-01", "2025-06-10");
-        List<Room> eligible = requestService.getEligibleRooms(request);
+    public void onSearch() {
+        int nb = nbPersonSpinner.getValue();
+        LocalDate start = startDatePicker.getValue();
+        LocalDate end = endDatePicker.getValue();
+        boolean sameRoom = sameRoomCheckBox.isSelected();
 
-        roomResultsBox.getChildren().clear();
-
-        for (Room room : eligible) {
-            Label label = new Label("🏠 Chambre : " + room.getName() + " [" + room.getGenderRestriction() + "]");
-            roomResultsBox.getChildren().add(label);
+        if (start != null && end != null && start.isBefore(end)) {
+            currentAssignments = assignService.generateAssignments(nb, start, end, sameRoom);
+            propositionTable.setItems(FXCollections.observableArrayList(currentAssignments));
         }
+    }
 
-        resultLabel.setText("✔ " + eligible.size() + " chambre(s) trouvée(s).");
+    @FXML
+    public void onConfirmAssignment() {
+        if (currentAssignments != null && !currentAssignments.isEmpty()) {
+            LocalDate start = startDatePicker.getValue();
+            LocalDate end = endDatePicker.getValue();
+            assignService.saveAssignments(currentAssignments, start, end);
+            propositionTable.getItems().clear();
+        }
     }
 }
-

@@ -10,6 +10,10 @@ public class Occupation {
     private LocalDate endDate;
     private boolean hasLeft;
 
+    
+    public Occupation() {}
+    
+
     public Occupation(int id, int personId, int bedId, LocalDate startDate, LocalDate endDate, boolean hasLeft) {
         this.id = id;
         this.personId = personId;
@@ -19,9 +23,7 @@ public class Occupation {
         this.hasLeft = hasLeft;
     }
 
-    public Occupation() {
-
-    }
+    
 
     public int getId() {
         return id;

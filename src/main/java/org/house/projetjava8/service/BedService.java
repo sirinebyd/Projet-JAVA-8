@@ -1,17 +1,17 @@
 package org.house.projetjava8.service;
 
+import java.sql.SQLException;
+import java.util.List;
+
 import org.house.projetjava8.dao.BedDAO;
 import org.house.projetjava8.model.Bed;
-
-import java.util.List;
-import java.sql.SQLException;
 
 public class BedService {
     private final BedDAO dao = new BedDAO();
 
     public List<Bed> getAll() {
         try {
-            return dao.getAll();
+            return BedDAO.getAll();
         } catch (Exception e) {
             throw new RuntimeException("Failed to getAll: " + e.getMessage(), e);
         }
@@ -43,20 +43,20 @@ public class BedService {
 
     public void delete(int id) {
         try {
-            dao.delete(id);
+            BedDAO.delete(id);
         } catch (Exception e) {
             throw new RuntimeException("Failed to delete: " + e.getMessage(), e);
         }
     }
+
     public boolean deleteBedIfPossible(int bedId) throws SQLException {
-    if (BedDAO.isBedInUse(bedId)) {
-        throw new IllegalStateException("This bed is currently in use.");
+        if (BedDAO.isBedInUse(bedId)) {
+            throw new IllegalStateException("This bed is currently in use.");
+        }
+        return BedDAO.delete(bedId);
     }
-    return BedDAO.delete(bedId);
-}
 
-
-    public static List<Bed> getBedByRoom(int roomId) {
+    public static List<Bed> getByRoom(int roomId) {
         try {
             List<Bed> allBeds = BedDAO.getAll();
             return allBeds.stream()

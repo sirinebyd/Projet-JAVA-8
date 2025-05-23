@@ -1,143 +1,134 @@
 package org.house.projetjava8.service;
 
+import java.sql.SQLException;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+
 import org.house.projetjava8.dao.OccupationDAO;
 import org.house.projetjava8.model.OccupancyRequest;
 import org.house.projetjava8.model.Occupation;
 import org.house.projetjava8.model.Person;
 import org.house.projetjava8.model.Room;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.sql.SQLException;
-
-import static org.house.projetjava8.dao.DatabaseManager.connection;
-
 public class OccupationService {
-    private final OccupationDAO dao = new OccupationDAO();
+    private final OccupationDAO occupationDAO = new OccupationDAO();
 
+    /**
+     * Récupère toutes les occupations.
+     */
     public List<Occupation> getAll() {
         try {
-            return dao.getAll();
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to getAll: " + e.getMessage(), e);
+            return occupationDAO.getAll();
+        } catch (SQLException e) {
+            throw new RuntimeException("Échec de la récupération des occupations: " + e.getMessage(), e);
         }
     }
 
+    /**
+     * Récupère une occupation par ID.
+     */
     public Occupation getById(int id) {
         try {
-            return dao.getById(id);
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to getById: " + e.getMessage(), e);
+            return occupationDAO.getById(id);
+        } catch (SQLException e) {
+            throw new RuntimeException("Échec de la récupération de l'occupation: " + e.getMessage(), e);
         }
     }
 
-    public void save(Occupation occupation) {
+    /**
+     * Ajoute une nouvelle occupation.
+     */
+    public boolean addOccupation(Occupation occupation) {
         try {
-            dao.add(occupation);
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to save: " + e.getMessage(), e);
+            return occupationDAO.add(occupation);
+        } catch (SQLException e) {
+            throw new RuntimeException("Échec de l'ajout de l'occupation: " + e.getMessage(), e);
         }
     }
 
-    public void update(Occupation occupation) {
+    /**
+     * Met à jour le flag hasLeft d'une occupation.
+     */
+    public boolean updateHasLeft(Occupation occupation) {
         try {
-            dao.updateHasLeft(occupation);
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to update: " + e.getMessage(), e);
+            return occupationDAO.updateHasLeft(occupation);
+        } catch (SQLException e) {
+            throw new RuntimeException("Échec de la mise à jour de l'occupation: " + e.getMessage(), e);
         }
     }
 
-    public void delete(int id) {
+    /**
+     * Supprime une occupation par ID.
+     */
+    public boolean deleteOccupation(int id) {
         try {
-            dao.delete(id);
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to delete: " + e.getMessage(), e);
+            return occupationDAO.delete(id);
+        } catch (SQLException e) {
+            throw new RuntimeException("Échec de la suppression de l'occupation: " + e.getMessage(), e);
         }
     }
 
+    /**
+     * Vérifie si une personne est compatible avec une salle.
+     */
     public boolean isPersonCompatibleWithRoom(Person person, Room room) {
         int age = person.getAge();
         boolean ageOk = age >= room.getMinAge() && age <= room.getMaxAge();
-        boolean genderOk = room.getGenderRestriction().equals("ALL") ||
-                room.getGenderRestriction().equalsIgnoreCase(person.getGender());
+        boolean genderOk = "ALL".equalsIgnoreCase(room.getGenderRestriction())
+                || room.getGenderRestriction().equalsIgnoreCase(person.getGender());
         return ageOk && genderOk;
     }
 
+    /**
+     * Vérifie la disponibilité d'un lit sur une plage de dates.
+     */
     public boolean isBedAvailable(int bedId, LocalDate start, LocalDate end) {
-        List<Occupation> occupations = OccupationDAO.getOccupationsForBed(bedId);
-
-        for (Occupation o : occupations) {
-            if (!(end.isBefore(o.getStartDate()) || start.isAfter(o.getEndDate()))) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    public boolean hasCoupure(int bedId, LocalDate rangeStart, LocalDate rangeEnd) {
-        List<Occupation> occupations = OccupationDAO.getOccupationsForBed(bedId);
-        occupations.sort(Comparator.comparing(Occupation::getStartDate));
-
-        LocalDate expected = rangeStart;
-
-        for (Occupation occ : occupations) {
-            if (occ.getEndDate().isBefore(rangeStart) || occ.getStartDate().isAfter(rangeEnd)) {
-                continue;
-            }
-
-            if (occ.getStartDate().isAfter(expected)) {
-
-                return true;
-            }
-
-
-            if (occ.getEndDate().isAfter(expected)) {
-                expected = occ.getEndDate().plusDays(1);
-            }
-        }
-
-        return false;
-    }
-
-    public List<Occupation> getOccupationsForBed(int bedId) throws SQLException {
-        List<Occupation> occupations = new ArrayList<>();
-        String sql = "SELECT * FROM occupation WHERE bed_id = ?";
-
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setInt(1, bedId);
-            ResultSet rs = stmt.executeQuery();
-
-            while (rs.next()) {
-                int id = rs.getInt("id");
-                int personId = rs.getInt("person_id");
-                LocalDate startDate = rs.getDate("start_date").toLocalDate();
-                LocalDate endDate = rs.getDate("end_date") != null ? rs.getDate("end_date").toLocalDate() : null;
-                boolean hasLeft = rs.getBoolean("has_left");
-
-                Occupation occupation = new Occupation(id, personId, bedId, startDate, endDate, hasLeft);
-                occupations.add(occupation);
-            }
-        }
-
-        return occupations;
-    }
-
-    public void addOccupation(Occupation o) {
         try {
-            OccupationDAO.add(o);
+            List<Occupation> occupations = occupationDAO.getOccupationsForBed(bedId);
+            for (Occupation occ : occupations) {
+                if (!(end.isBefore(occ.getStartDate()) || start.isAfter(occ.getEndDate()))) {
+                    return false;
+                }
+            }
+            return true;
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException("Échec de la vérification de disponibilité: " + e.getMessage(), e);
         }
     }
 
+    /**
+     * Vérifie s'il existe une coupure dans les occupations d'un lit.
+     */
+    public boolean hasCoupure(int bedId, LocalDate rangeStart, LocalDate rangeEnd) {
+        try {
+            List<Occupation> occupations = occupationDAO.getOccupationsForBed(bedId);
+            occupations.sort(Comparator.comparing(Occupation::getStartDate));
 
+            LocalDate expected = rangeStart;
+            for (Occupation occ : occupations) {
+                if (occ.getEndDate().isBefore(rangeStart) || occ.getStartDate().isAfter(rangeEnd)) {
+                    continue;
+                }
+                if (occ.getStartDate().isAfter(expected)) {
+                    return true;
+                }
+                if (occ.getEndDate().isAfter(expected)) {
+                    expected = occ.getEndDate().plusDays(1);
+                }
+            }
+            return false;
+        } catch (SQLException e) {
+            throw new RuntimeException("Échec de la vérification de coupure: " + e.getMessage(), e);
+        }
+    }
+
+    /**
+     * Génère une liste d'occupations basée sur une demande.
+     */
     public List<Occupation> genererOccupations(OccupancyRequest request) {
         List<Occupation> occupations = new ArrayList<>();
-
         for (int i = 0; i < request.getNumberOfPeople(); i++) {
             Occupation occupation = new Occupation();
             occupation.setStartDate(request.getStartDate());
@@ -145,8 +136,31 @@ public class OccupationService {
             occupation.setHasLeft(false);
             occupations.add(occupation);
         }
-
         return occupations;
     }
 
+   public void save(Occupation occupation) {
+        try {
+            occupationDAO.add(occupation);
+        } catch (SQLException e) {
+            throw new RuntimeException("Erreur lors de l'ajout de l'affectation : " + e.getMessage(), e);
+        }
+    }
+
+    public void update(Occupation occupation) {
+        try {
+            occupationDAO.updateHasLeft(occupation);
+        } catch (SQLException e) {
+            throw new RuntimeException("Erreur lors de la mise à jour de l'affectation : " + e.getMessage(), e);
+        }
+    }
+
+    public void delete(Occupation occupation) {
+        try {
+            occupationDAO.delete(occupation.getId());
+        } catch (SQLException e) {
+            throw new RuntimeException("Erreur lors de la suppression de l'affectation : " + e.getMessage(), e);
+        }
+    }
+   
 }

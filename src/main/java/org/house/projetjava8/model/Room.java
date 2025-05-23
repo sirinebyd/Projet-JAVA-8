@@ -6,6 +6,7 @@ public class Room {
     private String genderRestriction = "ALL"; // "M", "F", or "ALL"
     private int minAge = 0;
     private int maxAge = 120;
+   
     public Room(int id, String name, String genderRestriction, int minAge, int maxAge) {
         this.id = id;
         this.name = name;
@@ -57,5 +58,10 @@ public class Room {
 
     public void setMaxAge(int maxAge) {
         this.maxAge = maxAge;
+    }
+
+    @Override
+    public String toString() {
+        return name;
     }
 }

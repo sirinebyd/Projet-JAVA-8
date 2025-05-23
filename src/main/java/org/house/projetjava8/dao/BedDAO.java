@@ -1,10 +1,14 @@
 package org.house.projetjava8.dao;
 
-import org.house.projetjava8.model.Bed;
-
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.house.projetjava8.model.Bed;
 
 public class BedDAO {
     private static Connection connection = null;
@@ -12,7 +16,6 @@ public class BedDAO {
     public BedDAO() {
         connection = DatabaseManager.getConnection();
     }
-
 
     public void add(Bed bed) throws SQLException {
         String sql = "INSERT INTO bed (label, capacity, room_id) VALUES (?, ?, ?)";
@@ -30,11 +33,10 @@ public class BedDAO {
         try (Statement stmt = connection.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
             while (rs.next()) {
                 Bed bed = new Bed(
-                    rs.getInt("id"),
-                    rs.getString("label"),
-                    rs.getInt("capacity"),
-                    rs.getInt("room_id")
-                );
+                        rs.getInt("id"),
+                        rs.getString("label"),
+                        rs.getInt("capacity"),
+                        rs.getInt("room_id"));
                 beds.add(bed);
             }
         }
@@ -48,13 +50,31 @@ public class BedDAO {
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
                     return new Bed(
-                        rs.getInt("id"),
-                        rs.getString("label"),
-                        rs.getInt("capacity"),
-                        rs.getInt("room_id")
-                    );
+                            rs.getInt("id"),
+                            rs.getString("label"),
+                            rs.getInt("capacity"),
+                            rs.getInt("room_id"));
                 }
             }
+        }
+        return null;
+    }
+
+    public Bed getByLabel(String label) {
+        String sql = "SELECT * FROM bed WHERE label = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setString(1, label);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                Bed bed = new Bed();
+                bed.setId(rs.getInt("id"));
+                bed.setLabel(rs.getString("label"));
+                bed.setCapacity(rs.getInt("capacity"));
+                bed.setRoomId(rs.getInt("room_id"));
+                return bed;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
         return null;
     }
@@ -78,18 +98,18 @@ public class BedDAO {
             stmt.executeUpdate();
         }
     }
+
     public static boolean isBedInUse(int bedId) {
-    String sql = "SELECT COUNT(*) FROM occupations WHERE bed_id = ?";
-        DatabaseMetaData database = null;
-        try (Connection conn = database.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-        stmt.setInt(1, bedId);
-        ResultSet rs = stmt.executeQuery();
-        return rs.next() && rs.getInt(1) > 0;
-    } catch (SQLException e) {
-        e.printStackTrace();
-        return true;
+        String sql = "SELECT COUNT(*) FROM occupations WHERE bed_id = ?";
+        try (Connection conn = DatabaseManager.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, bedId);
+            ResultSet rs = stmt.executeQuery();
+            return rs.next() && rs.getInt(1) > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return true;
+        }
     }
-}
 
 }

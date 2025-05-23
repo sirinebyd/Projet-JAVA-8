@@ -1,29 +1,34 @@
 package org.house.projetjava8.service;
 
-import org.house.projetjava8.model.*;
-
 import java.time.LocalDate;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.house.projetjava8.model.Bed;
+import org.house.projetjava8.model.Person;
+import org.house.projetjava8.model.Room;
 
 public class BedAssignmentEngine {
 
     private RoomService roomService;
-    private BedService bedService;
     private OccupationService occupationService;
 
-    public BedAssignmentEngine(RoomService roomService, BedService bedService, OccupationService occupationService) {
+    public BedAssignmentEngine(RoomService roomService, OccupationService occupationService) {
         this.roomService = roomService;
-        this.bedService = bedService;
         this.occupationService = occupationService;
     }
 
-    public Map<Person, Bed> proposerAffectation(List<Person> personnes, LocalDate debut, LocalDate fin, boolean memeSalle) {
+    public Map<Person, Bed> proposerAffectation(List<Person> personnes, LocalDate debut, LocalDate fin,
+            boolean memeSalle) {
         Map<Person, Bed> affectations = new HashMap<>();
         List<Room> salles = roomService.getAll();
 
         for (Room salle : salles) {
             if (salleRespecte(personnes, salle)) {
-                List<Bed> lits = bedService.getBedByRoom(salle.getId());
+                List<Bed> lits = BedService.getByRoom(salle.getId());
 
                 List<Bed> litsDisponibles = new ArrayList<>();
                 for (Bed lit : lits) {
@@ -42,7 +47,7 @@ public class BedAssignmentEngine {
                         boolean affecte = false;
                         for (Room r : salles) {
                             if (salleRespecte(Collections.singletonList(p), r)) {
-                                for (Bed lit : bedService.getBedByRoom(r.getId())) {
+                                for (Bed lit : BedService.getByRoom(r.getId())) {
                                     if (occupationService.isBedAvailable(lit.getId(), debut, fin)) {
                                         affectations.put(p, lit);
                                         affecte = true;
@@ -50,7 +55,8 @@ public class BedAssignmentEngine {
                                     }
                                 }
                             }
-                            if (affecte) break;
+                            if (affecte)
+                                break;
                         }
                     }
                     return affectations;
@@ -67,7 +73,8 @@ public class BedAssignmentEngine {
             boolean ageOk = age >= salle.getMinAge() && age <= salle.getMaxAge();
             boolean genderOk = salle.getGenderRestriction().equals("ALL") ||
                     salle.getGenderRestriction().equalsIgnoreCase(p.getGender());
-            if (!(ageOk && genderOk)) return false;
+            if (!(ageOk && genderOk))
+                return false;
         }
         return true;
     }

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="org.house.projetjava8.ui.BedController"
+      spacing="10" style="-fx-padding: 20;">
+
+    <Label text="Gestion des lits" style="-fx-font-size: 18px; -fx-font-weight: bold;" />
+
+    <TableView fx:id="bedTable" prefHeight="250">
+        <columns>
+            <TableColumn fx:id="colLabel" text="Nom" />
+            <TableColumn fx:id="colCapacity" text="Capacité" />
+            <TableColumn fx:id="colRoom" text="Salle associée" />
+        </columns>
+    </TableView>
+
+    <GridPane hgap="10" vgap="10">
+        <Label text="Nom:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+        <TextField fx:id="labelField" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+
+        <Label text="Capacité:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+        <Spinner fx:id="capacitySpinner" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+
+        <Label text="Salle associée:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+        <ComboBox fx:id="roomComboBox" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+    </GridPane>
+
+    <HBox spacing="10">
+        <Button text="Ajouter" onAction="#onAddBed" />
+        <Button text="Modifier" onAction="#onUpdateBed" />
+        <Button text="Supprimer" onAction="#onDeleteBed" />
+    </HBox>
+</VBox>

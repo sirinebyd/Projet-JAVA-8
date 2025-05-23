@@ -1,15 +1,19 @@
 package org.house.projetjava8.main;
 
-import org.house.projetjava8.model.*;
-import org.house.projetjava8.service.*;
-
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Scanner;
 
+import org.house.projetjava8.model.Bed;
+import org.house.projetjava8.model.Occupation;
+import org.house.projetjava8.model.Person;
+import org.house.projetjava8.service.BedService;
+import org.house.projetjava8.service.OccupationService;
+import org.house.projetjava8.service.PersonService;
+
 public class ConsoleMain {
     private static PersonService personService = new PersonService();
-    private static RoomService roomService = new RoomService();
     private static BedService bedService = new BedService();
     private static OccupationService occupationService = new OccupationService();
 
@@ -53,16 +57,20 @@ public class ConsoleMain {
     private static void ajouterPersonne(Scanner scanner) {
         System.out.print("Nom : ");
         String nom = scanner.nextLine();
+        System.out.print("Prénom : ");
+        String prenom = scanner.nextLine();
         System.out.print("Genre (M/F) : ");
         String genre = scanner.nextLine();
         System.out.print("Date de naissance (YYYY-MM-DD) : ");
         String date = scanner.nextLine();
 
-        Person p = new Person("Dupont", "Claire", "F", LocalDate.of(2000, 6, 12));
-        p.setName(nom);
-        p.setGender(genre);
-        p.setBirthDate(String.valueOf(LocalDate.parse(date)));
-        personService.addPerson(p);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate birthDate = LocalDate.parse(date, formatter);
+
+        String formattedDate = birthDate.format(formatter);
+        Person person = new Person(nom, prenom, genre, formattedDate);
+
+        personService.addPerson(person);
         System.out.println("Personne ajoutée.");
     }
 

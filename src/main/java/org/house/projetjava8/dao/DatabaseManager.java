@@ -6,7 +6,7 @@ import java.sql.SQLException;
 
 public class DatabaseManager {
     private static final String DB_URL = "jdbc:sqlite:src/main/resources/db/database.db";
-   
+
     public static Connection connection = null;
 
     public static Connection getConnection() {
@@ -14,11 +14,65 @@ public class DatabaseManager {
             try {
                 connection = DriverManager.getConnection(DB_URL);
                 System.out.println("Connexion réussie à la base de données");
+                initializeDatabase(); // Création automatique des tables
             } catch (SQLException e) {
                 System.out.println("Erreur lors de la connexion : " + e.getMessage());
             }
         }
         return connection;
+    }
+
+    /**
+     * Crée toutes les tables nécessaires si elles n'existent pas.
+     */
+    private static void initializeDatabase() {
+        String[] tableStatements = {
+                "CREATE TABLE IF NOT EXISTS person (" +
+                        "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                        "last_name TEXT NOT NULL," +
+                        "first_name TEXT NOT NULL," +
+                        "gender TEXT," +
+                        "birth_date TEXT," +
+                        "birth_city TEXT," +
+                        "social_security_number TEXT" +
+                        ");",
+
+                "CREATE TABLE IF NOT EXISTS room (" +
+                        "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                        "name TEXT NOT NULL," +
+                        "gender_restriction TEXT," +
+                        "min_age INTEGER," +
+                        "max_age INTEGER" +
+                        ");",
+
+                "CREATE TABLE IF NOT EXISTS bed (" +
+                        "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                        "label TEXT NOT NULL," +
+                        "capacity INTEGER," +
+                        "room_id INTEGER," +
+                        "FOREIGN KEY(room_id) REFERENCES room(id)" +
+                        ");",
+
+                "CREATE TABLE IF NOT EXISTS occupation (" +
+                        "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                        "person_id INTEGER," +
+                        "bed_id INTEGER," +
+                        "start_date DATE," +
+                        "end_date DATE," +
+                        "has_left BOOLEAN," +
+                        "FOREIGN KEY(person_id) REFERENCES person(id)," +
+                        "FOREIGN KEY(bed_id) REFERENCES bed(id)" +
+                        ");"
+        };
+
+        try (Connection conn = DriverManager.getConnection(DB_URL)) {
+            for (String sql : tableStatements) {
+                conn.createStatement().execute(sql);
+            }
+            System.out.println("Tables vérifiées/créées avec succès.");
+        } catch (SQLException e) {
+            System.err.println("Erreur lors de la création des tables : " + e.getMessage());
+        }
     }
 
     public static void closeConnection() {
@@ -58,8 +112,7 @@ public class DatabaseManager {
         return instance;
     }
 
-
     public OccupationDAO getOccupationDAO() {
-        return new OccupationDAO(connection);
+        return new OccupationDAO();
     }
 }

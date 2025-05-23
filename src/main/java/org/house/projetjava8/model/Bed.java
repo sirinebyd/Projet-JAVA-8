@@ -1,7 +1,7 @@
 package org.house.projetjava8.model;
 
 public class Bed {
-    private static int id;
+    private int id;
     private String label;
     private int capacity;
     private int roomId;
@@ -17,8 +17,7 @@ public class Bed {
 
     }
 
-
-    public static int getId() {
+    public int getId() {
         return id;
     }
 

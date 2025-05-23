@@ -14,7 +14,7 @@ public class OccupancyRequestService {
     private final RoomDAO roomDAO;
 
     public OccupancyRequestService() {
-        this.roomDAO = DatabaseManager.getInstance().getRoomDAO();
+        this.roomDAO = DatabaseManager.getRoomDAO();
     }
 
     public List<Room> getEligibleRooms(OccupancyRequest request) {
@@ -41,4 +41,3 @@ public class OccupancyRequestService {
         return eligibleRooms;
     }
 }
-

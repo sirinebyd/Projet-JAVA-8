@@ -12,8 +12,7 @@ public class Person {
     private String birthCity;
     private String socialSecurityNumber;
 
-    public Person(String dupont, String claire, String f, LocalDate localDate) {
-    }
+    public Person() {}
 
     public Person(String lastName, String firstName, String gender, String birthDate) {
         this.lastName = lastName;

@@ -1,73 +1,93 @@
 package org.house.projetjava8.service;
 
+import java.sql.SQLException;
+import java.util.List;
+
 import org.house.projetjava8.dao.BedDAO;
 import org.house.projetjava8.dao.RoomDAO;
 import org.house.projetjava8.model.Bed;
 import org.house.projetjava8.model.Room;
-import org.house.projetjava8.model.Bed;
-import org.house.projetjava8.service.BedService;
-import org.house.projetjava8.dao.BedDAO;
-
-import java.util.List;
-import java.sql.SQLException;
-
-import org.house.projetjava8.service.BedService;
 
 public class RoomService {
-    private static final RoomDAO dao = new RoomDAO();
-    private final BedService bedService = new BedService();
-    private final BedDAO bedDao = new BedDAO();
+    private final RoomDAO roomDAO = new RoomDAO();
 
+    /**
+     * Récupère toutes les salles.
+     */
     public List<Room> getAll() {
         try {
-            return dao.getAll();
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to getAll: " + e.getMessage(), e);
+            return roomDAO.getAll();
+        } catch (SQLException e) {
+            throw new RuntimeException("Échec de la récupération des salles: " + e.getMessage(), e);
         }
     }
 
+    /**
+     * Récupère une salle par son ID.
+     */
     public Room getById(int id) {
         try {
-            return dao.getById(id);
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to getById: " + e.getMessage(), e);
-        }
-    }
-
-    public void save(Room room) {
-        try {
-            dao.add(room);
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to save: " + e.getMessage(), e);
-        }
-    }
-
-    public void delete(int id) {
-        try {
-            dao.delete(id);
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to delete: " + e.getMessage(), e);
-        }
-    }
-    public static boolean deleteRoomIfPossible(int roomId) throws SQLException {
-    List<Bed> beds = BedService.getBedByRoom(roomId);
-    for (Bed b : beds) {
-        if (BedDAO.isBedInUse(b.getId())) {
-            throw new IllegalStateException("At least one bed in this room is occupied.");
-        }
-    }
-    // Supprimer tous les lits avant la salle
-    for (Bed b : beds) {
-        BedDAO.delete(b.getId());
-    }
-    return dao.delete(roomId);
-}
-
-    public void addRoom(Room room) {
-        try {
-            RoomDAO.add(room);
+            return roomDAO.getById(id);
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException("Échec de la récupération de la salle: " + e.getMessage(), e);
         }
+    }
+
+    /**
+     * Ajoute une nouvelle salle.
+     * 
+     * @return true si l'ajout a réussi
+     */
+    public boolean addRoom(Room room) {
+        try {
+            return roomDAO.add(room);
+        } catch (SQLException e) {
+            throw new RuntimeException("Échec de l'ajout de la salle: " + e.getMessage(), e);
+        }
+    }
+
+    /**
+     * Supprime une salle après avoir vérifié et supprimé ses lits si possible.
+     * 
+     * @return true si la suppression a réussi
+     */
+    public boolean deleteRoom(int roomId) {
+        try {
+            // Vérifier que aucun lit n'est occupé
+            List<Bed> beds = BedService.getByRoom(roomId);
+            for (Bed bed : beds) {
+                if (BedDAO.isBedInUse(bed.getId())) {
+                    throw new IllegalStateException("Au moins un lit de cette salle est occupé.");
+                }
+            }
+            // Supprimer les lits associés
+            for (Bed bed : beds) {
+                BedDAO.delete(bed.getId());
+            }
+            // Supprimer la salle
+            return roomDAO.delete(roomId);
+        } catch (SQLException e) {
+            throw new RuntimeException("Échec de la suppression de la salle: " + e.getMessage(), e);
+        }
+    }
+
+    public boolean updateRoom(Room room) {
+        try {
+            return roomDAO.update(room);
+        } catch (SQLException e) {
+            throw new RuntimeException("Échec de la mise à jour de la salle: " + e.getMessage(), e);
+        }
+    }
+
+    public List<Bed> getBedsByRoom(int roomId) {
+        return BedService.getByRoom(roomId);
+    }
+
+    public boolean isBedInUse(int bedId) {
+        return BedDAO.isBedInUse(bedId);
+    }
+
+    public boolean deleteBed(int bedId) throws SQLException {
+        return BedDAO.delete(bedId);
     }
 }
