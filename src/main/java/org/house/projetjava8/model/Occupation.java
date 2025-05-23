@@ -66,4 +66,16 @@ public class Occupation {
     public void setHasLeft(boolean hasLeft) {
         this.hasLeft = hasLeft;
     }
+
+    public String getDateDebut() {
+        return startDate != null ? startDate.toString() : "";
+    }
+
+    public String getDateFin() {
+        return endDate != null ? endDate.toString() : "";
+    }
+
+    public boolean getSortie() {
+        return hasLeft;
+    }
 }

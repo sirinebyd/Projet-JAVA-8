@@ -14,5 +14,7 @@ module org.house.projetjava8 {
 
     opens org.house.projetjava8 to javafx.fxml;
     opens org.house.projetjava8.ui to javafx.fxml;
+
     exports org.house.projetjava8;
+    exports org.house.projetjava8.ui;
 }
