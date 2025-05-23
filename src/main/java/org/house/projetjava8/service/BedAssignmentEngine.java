@@ -25,7 +25,6 @@ public class BedAssignmentEngine {
             if (salleRespecte(personnes, salle)) {
                 List<Bed> lits = bedService.getBedByRoom(salle.getId());
 
-                // Filtrage : uniquement les lits disponibles dans la plage demandée
                 List<Bed> litsDisponibles = new ArrayList<>();
                 for (Bed lit : lits) {
                     if (occupationService.isBedAvailable(lit.getId(), debut, fin)) {
@@ -34,13 +33,11 @@ public class BedAssignmentEngine {
                 }
 
                 if (memeSalle && litsDisponibles.size() >= personnes.size()) {
-                    // Affecter directement dans cette salle
                     for (int i = 0; i < personnes.size(); i++) {
                         affectations.put(personnes.get(i), litsDisponibles.get(i));
                     }
                     return affectations;
                 } else if (!memeSalle) {
-                    // Affectation répartie dans plusieurs salles
                     for (Person p : personnes) {
                         boolean affecte = false;
                         for (Room r : salles) {
@@ -61,7 +58,7 @@ public class BedAssignmentEngine {
             }
         }
 
-        return affectations; // Vide si rien trouvé
+        return affectations;
     }
 
     private boolean salleRespecte(List<Person> personnes, Room salle) {
