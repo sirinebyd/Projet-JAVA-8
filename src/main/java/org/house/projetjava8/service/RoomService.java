@@ -48,7 +48,7 @@ public class RoomService {
         }
     }
     public boolean deleteRoomIfPossible(int roomId) {
-    List<Bed> beds = BedService.getBedsByRoom(roomId);
+    List<Bed> beds = bedService.getBedsByRoom(roomId);
     for (Bed b : beds) {
         if (BedDao.isBedInUse(b.getId())) {
             throw new IllegalStateException("At least one bed in this room is occupied.");
