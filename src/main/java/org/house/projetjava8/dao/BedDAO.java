@@ -77,16 +77,34 @@ public class BedDAO {
         }
     }
     public boolean isBedInUse(int bedId) {
-    String sql = "SELECT COUNT(*) FROM occupations WHERE bed_id = ?";
-    try (Connection conn = db.getConnection();
-         PreparedStatement stmt = conn.prepareStatement(sql)) {
-        stmt.setInt(1, bedId);
-        ResultSet rs = stmt.executeQuery();
-        return rs.next() && rs.getInt(1) > 0;
-    } catch (SQLException e) {
-        e.printStackTrace();
-        return true;
+        String sql = "SELECT COUNT(*) FROM occupations WHERE bed_id = ?";
+        try (Connection conn = db.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, bedId);
+            ResultSet rs = stmt.executeQuery();
+            return rs.next() && rs.getInt(1) > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return true;
+        }
     }
-}
+
+    public List<Bed> getBedsByRoom(int roomId) throws SQLException {
+        List<Bed> beds = new ArrayList<>();
+        String sql = "SELECT * FROM bed WHERE room_id = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setInt(1, roomId);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                Bed bed = new Bed(
+                        rs.getInt("id"),
+                        rs.getInt("room_id"),
+                        rs.getBoolean("available")
+                );
+                beds.add(bed);
+            }
+        }
+        return beds;
+    }
 
 }
