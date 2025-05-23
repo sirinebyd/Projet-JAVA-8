@@ -14,6 +14,12 @@ public class OccupationDAO {
         this.connection = DatabaseManager.getConnection();
     }
 
+    public static List<Occupation> getOccupationsForBed(int bedId) {
+        OccupationDAO dao = new OccupationDAO();
+        return getOccupationsForBed(bedId);
+    }
+
+
     public void add(Occupation occupation) throws SQLException {
         String sql = "INSERT INTO occupation (person_id, bed_id, start_date, end_date, has_left) VALUES (?, ?, ?, ?, ?)";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
@@ -81,4 +87,15 @@ public class OccupationDAO {
             stmt.executeUpdate();
         }
     }
+
+    public void updateHasLeft(Occupation occupation) throws SQLException {
+        String sql = "UPDATE occupation SET has_left = ? WHERE id = ?";
+
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setBoolean(1, occupation.isHasLeft());
+            stmt.setInt(2, occupation.getId());
+            stmt.executeUpdate();
+        }
+    }
+
 }

@@ -9,6 +9,7 @@ import org.house.projetjava8.model.Occupation;
 import org.house.projetjava8.service.BedService;
 import org.house.projetjava8.service.OccupationService;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
@@ -22,7 +23,7 @@ public class EtatCentreController {
     private OccupationService occupationService = new OccupationService();
 
     @FXML
-    public void initialize() {
+    public void initialize() throws SQLException {
         List<Bed> beds = BedService.getAllBeds();
         int col = 0, row = 0;
 
@@ -35,7 +36,7 @@ public class EtatCentreController {
             if (col > 5) { col = 0; row++; }
         }
     }
-    private Image getBedImage(Bed bed) {
+    private Image getBedImage(Bed bed) throws SQLException {
     List<Occupation> occs = occupationService.getOccupationsForBed(bed.getId());
     LocalDate today = LocalDate.now();
 

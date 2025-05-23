@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BedDAO {
-    private final Connection connection;
+    private static Connection connection = null;
 
     public BedDAO() {
         this.connection = DatabaseManager.getConnection();
@@ -23,7 +23,7 @@ public class BedDAO {
         }
     }
 
-    public List<Bed> getAll() throws SQLException {
+    public static List<Bed> getAll() throws SQLException {
         List<Bed> beds = new ArrayList<>();
         String sql = "SELECT * FROM bed";
         try (Statement stmt = connection.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
@@ -58,12 +58,13 @@ public class BedDAO {
         return null;
     }
 
-    public void delete(int id) throws SQLException {
+    public static boolean delete(int id) throws SQLException {
         String sql = "DELETE FROM bed WHERE id = ?";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setInt(1, id);
             stmt.executeUpdate();
         }
+        return false;
     }
 
     public void update(Bed bed) throws SQLException {
@@ -76,7 +77,7 @@ public class BedDAO {
             stmt.executeUpdate();
         }
     }
-    public boolean isBedInUse(int bedId) {
+    public static boolean isBedInUse(int bedId) {
     String sql = "SELECT COUNT(*) FROM occupations WHERE bed_id = ?";
     try (Connection conn = db.getConnection();
          PreparedStatement stmt = conn.prepareStatement(sql)) {

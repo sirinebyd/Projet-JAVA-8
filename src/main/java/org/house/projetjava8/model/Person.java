@@ -1,5 +1,8 @@
 package org.house.projetjava8.model;
 
+import java.time.LocalDate;
+import java.time.Period;
+
 public class Person {
     private int id;
     private String lastName;
@@ -8,6 +11,16 @@ public class Person {
     private String birthDate;
     private String birthCity;
     private String socialSecurityNumber;
+
+    public Person() {
+    }
+
+    public Person(String lastName, String firstName, String gender, String birthDate) {
+        this.lastName = lastName;
+        this.firstName = firstName;
+        this.gender = gender;
+        this.birthDate = birthDate;
+    }
 
     public Person(int id, String lastName, String firstName, String gender, String birthDate,
                   String birthCity, String socialSecurityNumber) {
@@ -20,7 +33,6 @@ public class Person {
         this.socialSecurityNumber = socialSecurityNumber;
     }
 
-    // Getters & Setters
     public int getId() {
         return id;
     }
@@ -75,5 +87,14 @@ public class Person {
 
     public void setSocialSecurityNumber(String socialSecurityNumber) {
         this.socialSecurityNumber = socialSecurityNumber;
+    }
+
+    public String getName() {
+        return firstName + " " + lastName;
+    }
+
+    public int getAge() {
+        if (birthDate == null) return -1;
+        return Period.between(LocalDate.parse(birthDate), LocalDate.now()).getYears();
     }
 }

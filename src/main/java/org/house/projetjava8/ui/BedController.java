@@ -20,13 +20,5 @@ public class BedController {
         bed.setRoomId(Integer.parseInt(roomIdField.getText()));
         service.save(bed);
     }
-    @FXML
-private void handleDeleteBed() {
-    try {
-        bedService.deleteBedIfPossible(selectedBed.getId());
-        refreshBedList();
-    } catch (IllegalStateException e) {
-        showAlert("Erreur", e.getMessage());
-    }
-}
+
 }

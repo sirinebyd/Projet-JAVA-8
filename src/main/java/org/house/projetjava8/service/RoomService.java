@@ -1,6 +1,8 @@
 package org.house.projetjava8.service;
 
+import org.house.projetjava8.dao.BedDAO;
 import org.house.projetjava8.dao.RoomDAO;
+import org.house.projetjava8.model.Bed;
 import org.house.projetjava8.model.Room;
 
 import java.util.List;

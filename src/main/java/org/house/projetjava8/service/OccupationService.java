@@ -5,10 +5,15 @@ import org.house.projetjava8.model.Occupation;
 import org.house.projetjava8.model.Person;
 import org.house.projetjava8.model.Room;
 
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.sql.SQLException;
+
+import static org.house.projetjava8.dao.DatabaseManager.connection;
 
 public class OccupationService {
     private final OccupationDAO dao = new OccupationDAO();
@@ -52,46 +57,72 @@ public class OccupationService {
             throw new RuntimeException("Failed to delete: " + e.getMessage(), e);
         }
     }
+
     public boolean isPersonCompatibleWithRoom(Person person, Room room) {
-    int age = person.calculateAge(); // Crée cette méthode si elle n'existe pas
-    boolean ageOk = age >= room.getMinAge() && age <= room.getMaxAge();
-    boolean genderOk = room.getGenderRestriction().equals("ALL") ||
-                       room.getGenderRestriction().equalsIgnoreCase(person.getGender());
-    return ageOk && genderOk;
-}
+        int age = person.getAge();
+        boolean ageOk = age >= room.getMinAge() && age <= room.getMaxAge();
+        boolean genderOk = room.getGenderRestriction().equals("ALL") ||
+                room.getGenderRestriction().equalsIgnoreCase(person.getGender());
+        return ageOk && genderOk;
+    }
+
     public boolean isBedAvailable(int bedId, LocalDate start, LocalDate end) {
-    List<Occupation> occupations = OccupationDAO.getOccupationsForBed(bedId);
+        List<Occupation> occupations = OccupationDAO.getOccupationsForBed(bedId);
 
-    for (Occupation o : occupations) {
-        if (!(end.isBefore(o.getStartDate()) || start.isAfter(o.getEndDate()))) {
-            return false;
+        for (Occupation o : occupations) {
+            if (!(end.isBefore(o.getStartDate()) || start.isAfter(o.getEndDate()))) {
+                return false;
+            }
         }
+        return true;
     }
-    return true;
-}
+
     public boolean hasCoupure(int bedId, LocalDate rangeStart, LocalDate rangeEnd) {
-    List<Occupation> occupations = OccupationDAO.getOccupationsForBed(bedId);
-    occupations.sort(Comparator.comparing(Occupation::getStartDate));
+        List<Occupation> occupations = OccupationDAO.getOccupationsForBed(bedId);
+        occupations.sort(Comparator.comparing(Occupation::getStartDate));
 
-    LocalDate expected = rangeStart;
+        LocalDate expected = rangeStart;
 
-    for (Occupation occ : occupations) {
-        if (occ.getEndDate().isBefore(rangeStart) || occ.getStartDate().isAfter(rangeEnd)) {
-            continue; // hors de la plage concernée
+        for (Occupation occ : occupations) {
+            if (occ.getEndDate().isBefore(rangeStart) || occ.getStartDate().isAfter(rangeEnd)) {
+                continue;
+            }
+
+            if (occ.getStartDate().isAfter(expected)) {
+
+                return true;
+            }
+
+
+            if (occ.getEndDate().isAfter(expected)) {
+                expected = occ.getEndDate().plusDays(1);
+            }
         }
 
-        if (occ.getStartDate().isAfter(expected)) {
-            // Trouvé une coupure
-            return true;
-        }
-
-        // Actualise la date attendue
-        if (occ.getEndDate().isAfter(expected)) {
-            expected = occ.getEndDate().plusDays(1);
-        }
+        return false;
     }
 
-    return false;
-}
+    public List<Occupation> getOccupationsForBed(int bedId) throws SQLException {
+        List<Occupation> occupations = new ArrayList<>();
+        String sql = "SELECT * FROM occupation WHERE bed_id = ?";
+
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setInt(1, bedId);
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                int personId = rs.getInt("person_id");
+                LocalDate startDate = rs.getDate("start_date").toLocalDate();
+                LocalDate endDate = rs.getDate("end_date") != null ? rs.getDate("end_date").toLocalDate() : null;
+                boolean hasLeft = rs.getBoolean("has_left");
+
+                Occupation occupation = new Occupation(id, personId, bedId, startDate, endDate, hasLeft);
+                occupations.add(occupation);
+            }
+        }
+
+        return occupations;
+    }
 
 }

@@ -78,4 +78,8 @@ public class Occupation {
     public boolean getSortie() {
         return hasLeft;
     }
+
+    public boolean isExited() {
+        return hasLeft;
+    }
 }
