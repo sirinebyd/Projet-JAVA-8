@@ -11,6 +11,8 @@ public class OccupancyRequest {
     private int minAge;
     private int maxAge;
 
+    public OccupancyRequest() {}
+
     public OccupancyRequest(int numberOfPeople, LocalDate startDate, LocalDate endDate, boolean sameRoom, String gender, int minAge, int maxAge) {
         this.numberOfPeople = numberOfPeople;
         this.startDate = startDate;
