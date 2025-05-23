@@ -7,13 +7,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PersonDAO {
-    private final Connection connection;
+    private static Connection connection = null;
 
     public PersonDAO() {
         this.connection = DatabaseManager.getConnection();
     }
 
-    public void add(Person person) throws SQLException {
+    public static void add(Person person) throws SQLException {
         String sql = "INSERT INTO person (last_name, first_name, gender, birth_date, birth_city, social_security_number) VALUES (?, ?, ?, ?, ?, ?)";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setString(1, person.getLastName());
@@ -67,17 +67,19 @@ public class PersonDAO {
         return null;
     }
 
-    public void delete(int id) throws SQLException {
+    public boolean delete(int id) throws SQLException {
         String sql = "DELETE FROM person WHERE id = ?";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setInt(1, id);
             stmt.executeUpdate();
         }
+        return false;
     }
     public boolean isPersonInUse(int personId) {
     String sql = "SELECT COUNT(*) FROM occupations WHERE person_id = ?";
-    try (Connection conn = db.getConnection();
-         PreparedStatement stmt = conn.prepareStatement(sql)) {
+        DatabaseMetaData database = null;
+        try (Connection conn = database.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
         stmt.setInt(1, personId);
         ResultSet rs = stmt.executeQuery();
         return rs.next() && rs.getInt(1) > 0;

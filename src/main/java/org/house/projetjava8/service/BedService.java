@@ -48,11 +48,24 @@ public class BedService {
             throw new RuntimeException("Failed to delete: " + e.getMessage(), e);
         }
     }
-    public boolean deleteBedIfPossible(int bedId) {
+    public boolean deleteBedIfPossible(int bedId) throws SQLException {
     if (BedDAO.isBedInUse(bedId)) {
         throw new IllegalStateException("This bed is currently in use.");
     }
-    return BedDAO.deleteBed(bedId);
+    return BedDAO.delete(bedId);
 }
+
+
+    public static List<Bed> getBedByRoom(int roomId) {
+        try {
+            List<Bed> allBeds = BedDAO.getAll();
+            return allBeds.stream()
+                    .filter(bed -> bed.getRoomId() == roomId)
+                    .toList();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return List.of(); // ou Collections.emptyList()
+        }
+    }
 
 }

@@ -7,9 +7,9 @@ import java.util.List;
 import java.sql.SQLException;
 
 public class PersonService {
-    private final PersonDAO dao = new PersonDAO();
+    private static final PersonDAO dao = new PersonDAO();
 
-    public List<Person> getAll() {
+    public static List<Person> getAll() {
         try {
             return dao.getAll();
         } catch (Exception e) {
@@ -32,11 +32,11 @@ public class PersonService {
             throw new RuntimeException("Failed to save: " + e.getMessage(), e);
         }
     }
-    public boolean deletePersonIfPossible(int personId) {
+    public static boolean deletePersonIfPossible(int personId) throws SQLException {
     if (dao.isPersonInUse(personId)) {
         throw new IllegalStateException("This person is linked to active occupations.");
     }
-    return dao.deletePerson(personId);
+    return dao.delete(personId);
 }
 
     public void delete(int id) {
@@ -44,6 +44,23 @@ public class PersonService {
             dao.delete(id);
         } catch (Exception e) {
             throw new RuntimeException("Failed to delete: " + e.getMessage(), e);
+        }
+    }
+
+    public void add(Person person) {
+        try {
+            PersonDAO.add(person);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public void addPerson(Person p) {
+        try {
+            PersonDAO.add(p);
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 }

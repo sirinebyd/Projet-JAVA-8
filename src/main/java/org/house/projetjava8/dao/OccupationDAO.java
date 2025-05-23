@@ -8,10 +8,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class OccupationDAO {
-    private final Connection connection;
+    private static Connection connection = null;
 
     public OccupationDAO() {
-        this.connection = DatabaseManager.getConnection();
+        connection = DatabaseManager.getConnection();
+    }
+
+    public OccupationDAO(Connection connection) {
+        OccupationDAO.connection = connection;
     }
 
     public static List<Occupation> getOccupationsForBed(int bedId) {
@@ -20,7 +24,7 @@ public class OccupationDAO {
     }
 
 
-    public void add(Occupation occupation) throws SQLException {
+    public static void add(Occupation occupation) throws SQLException {
         String sql = "INSERT INTO occupation (person_id, bed_id, start_date, end_date, has_left) VALUES (?, ?, ?, ?, ?)";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setInt(1, occupation.getPersonId());

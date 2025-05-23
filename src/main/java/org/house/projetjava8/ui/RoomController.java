@@ -22,13 +22,5 @@ public class RoomController {
         room.setMaxAge(Integer.parseInt(maxAgeField.getText()));
         service.save(room);
     }
-    @FXML
-private void handleDeleteRoom() {
-    try {
-        RoomService.deleteRoomIfPossible(selectedRoom.getId());
-        refreshRoomList();
-    } catch (IllegalStateException e) {
-        showAlert("Erreur", e.getMessage());
-    }
-}
+
 }

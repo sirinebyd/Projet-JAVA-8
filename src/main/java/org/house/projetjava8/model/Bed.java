@@ -13,7 +13,11 @@ public class Bed {
         this.roomId = roomId;
     }
 
-   
+    public Bed() {
+
+    }
+
+
     public static int getId() {
         return id;
     }

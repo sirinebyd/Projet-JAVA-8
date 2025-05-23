@@ -25,6 +25,17 @@ module org.house.projetjava8 {
     requires org.opentest4j;
     requires org.junit.platform.commons;
     requires org.apiguardian.api;
+    requires jdk.javadoc;
+    requires org.kordamp.ikonli.core;
+    requires javafx.media;
+    requires javafx.swing;
+    requires com.gluonhq.attach.lifecycle;
+    requires com.gluonhq.attach.util;
+    requires com.gluonhq.attach.storage;
+    requires com.fasterxml.jackson.databind;
+    requires com.fasterxml.jackson.core;
+    requires com.fasterxml.jackson.annotation;
+    requires com.gluonhq.attach.audio;
 
     opens org.house.projetjava8 to javafx.fxml;
     opens org.house.projetjava8.ui to javafx.fxml;

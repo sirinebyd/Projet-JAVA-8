@@ -19,11 +19,11 @@ public class BedAssignmentEngine {
 
     public Map<Person, Bed> proposerAffectation(List<Person> personnes, LocalDate debut, LocalDate fin, boolean memeSalle) {
         Map<Person, Bed> affectations = new HashMap<>();
-        List<Room> salles = roomService.getAllRooms();
+        List<Room> salles = roomService.getAll();
 
         for (Room salle : salles) {
             if (salleRespecte(personnes, salle)) {
-                List<Bed> lits = bedService.getBedsByRoom(salle.getId());
+                List<Bed> lits = bedService.getBedByRoom(salle.getId());
 
                 // Filtrage : uniquement les lits disponibles dans la plage demandée
                 List<Bed> litsDisponibles = new ArrayList<>();
@@ -45,7 +45,7 @@ public class BedAssignmentEngine {
                         boolean affecte = false;
                         for (Room r : salles) {
                             if (salleRespecte(Collections.singletonList(p), r)) {
-                                for (Bed lit : bedService.getBedsByRoom(r.getId())) {
+                                for (Bed lit : bedService.getBedByRoom(r.getId())) {
                                     if (occupationService.isBedAvailable(lit.getId(), debut, fin)) {
                                         affectations.put(p, lit);
                                         affecte = true;
@@ -66,7 +66,7 @@ public class BedAssignmentEngine {
 
     private boolean salleRespecte(List<Person> personnes, Room salle) {
         for (Person p : personnes) {
-            int age = p.calculateAge(); // À implémenter si manquant
+            int age = p.getAge();
             boolean ageOk = age >= salle.getMinAge() && age <= salle.getMaxAge();
             boolean genderOk = salle.getGenderRestriction().equals("ALL") ||
                     salle.getGenderRestriction().equalsIgnoreCase(p.getGender());

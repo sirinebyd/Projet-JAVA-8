@@ -1,6 +1,7 @@
 package org.house.projetjava8.service;
 
 import org.house.projetjava8.dao.OccupationDAO;
+import org.house.projetjava8.model.OccupancyRequest;
 import org.house.projetjava8.model.Occupation;
 import org.house.projetjava8.model.Person;
 import org.house.projetjava8.model.Room;
@@ -120,6 +121,29 @@ public class OccupationService {
                 Occupation occupation = new Occupation(id, personId, bedId, startDate, endDate, hasLeft);
                 occupations.add(occupation);
             }
+        }
+
+        return occupations;
+    }
+
+    public void addOccupation(Occupation o) {
+        try {
+            OccupationDAO.add(o);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public List<Occupation> genererOccupations(OccupancyRequest request) {
+        List<Occupation> occupations = new ArrayList<>();
+
+        for (int i = 0; i < request.getNumberOfPeople(); i++) {
+            Occupation occupation = new Occupation();
+            occupation.setStartDate(request.getStartDate());
+            occupation.setEndDate(request.getEndDate());
+            occupation.setHasLeft(false);
+            occupations.add(occupation);
         }
 
         return occupations;

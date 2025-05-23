@@ -14,6 +14,10 @@ public class Room {
         this.maxAge = maxAge;
     }
 
+    public Room() {
+
+    }
+
     // Getters & Setters
     public int getId() {
         return id;

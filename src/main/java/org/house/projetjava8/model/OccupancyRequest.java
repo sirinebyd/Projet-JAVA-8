@@ -23,6 +23,16 @@ public class OccupancyRequest {
         this.maxAge = maxAge;
     }
 
+
+
+    public OccupancyRequest(int nb, String g, String dDebut, String dFin) {
+        this.numberOfPeople = nb;
+        this.gender = g;
+        this.startDate = LocalDate.parse(dDebut);
+        this.endDate = LocalDate.parse(dFin);
+    }
+
+
     public int getNumberOfPeople() {
         return numberOfPeople;
     }

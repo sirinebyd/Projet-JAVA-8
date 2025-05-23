@@ -7,13 +7,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RoomDAO {
-    private final Connection connection;
+    private static Connection connection = null;
 
     public RoomDAO() {
         this.connection = DatabaseManager.getConnection();
     }
 
-    public void add(Room room) throws SQLException {
+    public static void add(Room room) throws SQLException {
         String sql = "INSERT INTO room (name, gender_restriction, min_age, max_age) VALUES (?, ?, ?, ?)";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setString(1, room.getName());
@@ -61,12 +61,13 @@ public class RoomDAO {
         return null;
     }
 
-    public void delete(int id) throws SQLException {
+    public boolean delete(int id) throws SQLException {
         String sql = "DELETE FROM room WHERE id = ?";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setInt(1, id);
             stmt.executeUpdate();
         }
+        return false;
     }
 }
 

@@ -42,7 +42,7 @@ public class ConsoleMain {
     }
 
     private static void listerPersonnes() {
-        List<Person> personnes = personService.getAllPersons();
+        List<Person> personnes = PersonService.getAll();
         if (personnes.isEmpty()) {
             System.out.println("Aucune personne trouvée.");
         } else {
@@ -58,16 +58,16 @@ public class ConsoleMain {
         System.out.print("Date de naissance (YYYY-MM-DD) : ");
         String date = scanner.nextLine();
 
-        Person p = new Person();
+        Person p = new Person("Dupont", "Claire", "F", LocalDate.of(2000, 6, 12));
         p.setName(nom);
         p.setGender(genre);
-        p.setBirthDate(LocalDate.parse(date));
+        p.setBirthDate(String.valueOf(LocalDate.parse(date)));
         personService.addPerson(p);
         System.out.println("Personne ajoutée.");
     }
 
     private static void listerLitsDisponibles() {
-        List<Bed> lits = bedService.getAllBeds();
+        List<Bed> lits = bedService.getAll();
         System.out.println("Liste des lits disponibles (tous, filtrage à améliorer) :");
         for (Bed bed : lits) {
             System.out.println("Lit ID: " + bed.getId() + " - Salle ID: " + bed.getRoomId());
@@ -97,7 +97,7 @@ public class ConsoleMain {
     }
 
     private static void voirOccupations() {
-        List<Occupation> occupations = occupationService.getAllOccupations();
+        List<Occupation> occupations = occupationService.getAll();
         for (Occupation o : occupations) {
             System.out.println("Personne ID " + o.getPersonId() + " - Lit ID " + o.getBedId()
                     + " du " + o.getStartDate() + " au " + o.getEndDate()

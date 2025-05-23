@@ -8,9 +8,9 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class PersonServiceTest {
+public class PersonServiceTest {
 
-    private static PersonService personService;
+    public static PersonService personService;
 
     @BeforeAll
     static void setup() {
@@ -19,14 +19,14 @@ class PersonServiceTest {
 
     @Test
     void testAddAndGetPerson() {
-        Person person = new Person();
-        person.setName("Alice");
+        Person person = new Person("Dupont", "Claire", "F", LocalDate.of(2000, 6, 12));
+        person.setFirstName("Alice");
         person.setGender("F");
-        person.setBirthDate(LocalDate.of(2000, 1, 1));
+        person.setBirthDate(String.valueOf(LocalDate.of(2000, 1, 1)));
 
-        personService.addPerson(person);
+        personService.add(person);
 
-        List<Person> all = personService.getAllPersons();
+        List<Person> all = personService.getAll();
         assertTrue(all.stream().anyMatch(p -> p.getName().equals("Alice")));
     }
 }

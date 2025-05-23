@@ -26,7 +26,7 @@ class RoomServiceTest {
 
         roomService.addRoom(room);
 
-        List<Room> rooms = roomService.getAllRooms();
+        List<Room> rooms = roomService.getAll();
         assertTrue(rooms.stream().anyMatch(r -> r.getName().equals("Test Room")));
     }
 }

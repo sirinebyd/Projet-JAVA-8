@@ -14,9 +14,9 @@ import java.sql.SQLException;
 import org.house.projetjava8.service.BedService;
 
 public class RoomService {
-    private final RoomDAO dao = new RoomDAO();
+    private static final RoomDAO dao = new RoomDAO();
     private final BedService bedService = new BedService();
-    private final BedDAO bedDao = new BedDAO()
+    private final BedDAO bedDao = new BedDAO();
 
     public List<Room> getAll() {
         try {
@@ -49,17 +49,25 @@ public class RoomService {
             throw new RuntimeException("Failed to delete: " + e.getMessage(), e);
         }
     }
-    public boolean deleteRoomIfPossible(int roomId) {
-    List<Bed> beds = bedService.getBedsByRoom(roomId);
+    public static boolean deleteRoomIfPossible(int roomId) throws SQLException {
+    List<Bed> beds = BedService.getBedByRoom(roomId);
     for (Bed b : beds) {
-        if (BedDao.isBedInUse(b.getId())) {
+        if (BedDAO.isBedInUse(b.getId())) {
             throw new IllegalStateException("At least one bed in this room is occupied.");
         }
     }
     // Supprimer tous les lits avant la salle
     for (Bed b : beds) {
-        BedDao.deleteBed(b.getId());
+        BedDAO.delete(b.getId());
     }
-    return dao.deleteRoom(roomId);
+    return dao.delete(roomId);
 }
+
+    public void addRoom(Room room) {
+        try {
+            RoomDAO.add(room);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }

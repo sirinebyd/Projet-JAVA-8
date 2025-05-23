@@ -19,6 +19,10 @@ public class Occupation {
         this.hasLeft = hasLeft;
     }
 
+    public Occupation() {
+
+    }
+
     public int getId() {
         return id;
     }
@@ -81,5 +85,9 @@ public class Occupation {
 
     public boolean isExited() {
         return hasLeft;
+    }
+
+    public void setExited(boolean b) {
+        hasLeft = b;
     }
 }

@@ -24,7 +24,7 @@ public class EtatCentreController {
 
     @FXML
     public void initialize() throws SQLException {
-        List<Bed> beds = BedService.getAllBeds();
+        List<Bed> beds = BedService.getAll();
         int col = 0, row = 0;
 
         for (Bed bed : beds) {

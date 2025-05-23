@@ -12,7 +12,7 @@ public class Person {
     private String birthCity;
     private String socialSecurityNumber;
 
-    public Person() {
+    public Person(String dupont, String claire, String f, LocalDate localDate) {
     }
 
     public Person(String lastName, String firstName, String gender, String birthDate) {
@@ -97,4 +97,10 @@ public class Person {
         if (birthDate == null) return -1;
         return Period.between(LocalDate.parse(birthDate), LocalDate.now()).getYears();
     }
+
+
+    public void setName(String nom) {
+        this.firstName = nom;
+    }
+
 }
